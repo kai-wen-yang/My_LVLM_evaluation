@@ -83,7 +83,7 @@ class Blip2VicunaInstruct(Blip2Base):
 
         self.llm_tokenizer = LlamaTokenizer.from_pretrained(llm_model, use_fast=False, truncation_side="left")
         self.llm_model = LlamaForCausalLM.from_pretrained(
-            llm_model, torch_dtype=torch.float16
+            llm_model, torch_dtype=torch.bfloat16
         )
         self.llm_tokenizer.add_special_tokens({'pad_token': '[PAD]'})
         self.llm_tokenizer.add_special_tokens({'bos_token': '</s>'})
