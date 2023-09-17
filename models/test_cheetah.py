@@ -43,6 +43,6 @@ class TestCheetah:
         outputs = []
         for image, question in zip(image_list, question_list):
             pdb.set_trace()
-            output = self.chat.answer([image], question, max_new_tokens=max_new_tokens)
+            output = self.chat.answer([image], "<Img><HereForImage></Img> "+question, max_new_tokens=max_new_tokens)
             outputs.append(output)
         return outputs
