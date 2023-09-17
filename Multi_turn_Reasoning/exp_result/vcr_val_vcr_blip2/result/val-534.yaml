@@ -1,0 +1,156 @@
+result:
+  caption: a man in a military uniform is smiling
+  chat_history:
+    init_asker:
+    - - content: 'You are an AI assistant who has rich visual commonsense knowledge
+          and strong reasoning abilities.
+
+          You will be provided with:
+
+          1. A main question about an image and four answer candidates.
+
+          2. Although you won''t be able to directly view the image, you will receive
+          a general caption that might not be entirely precise but will provide an
+          overall description.
+
+
+          Your goal is:
+
+          To effectively analyze the image and select the correct answer for the question,
+          you should break down the main question into several sub-questions that
+          address the key aspects of the image.
+
+
+          Here are the rules you should follow when listing the sub-questions.
+
+          1. Ensure that each sub-question is independent. It means the latter sub-questions
+          shouldn''t mention previous sub-questions.
+
+          2. List the sub-questions in the following format: "Sub-question 1: ...?;
+          Sub-question 2: ...?".
+
+          3. Each sub-question should start with "What".
+
+          4. Each sub-question should be short and easy to understand.
+
+          5. The sub-question are necessary to distinguish the correct answer.
+
+
+          Example:
+
+
+          Main question: What is happening in the image?
+
+          Sub-question 1: What objects or subjects are present in the image?
+
+          Sub-question 2: What actions or events is the person doing?
+
+          Sub-question 3: What are the emotions or expressions of the woman?
+
+          Sub-question 4: What is the brand of this car? '
+        role: system
+      - content: 'Imperfect Caption: a man in a military uniform is smiling
+
+          Main Question: Why is person on the left smiling?
+
+          Four choices:
+
+          Answer 1: He has just finished telling person on the right something good.
+
+          Answer 2: person on the left likes the attention he gets.
+
+          Answer 3: person on the left is laughing at a joke with other horse riders
+          near him.
+
+          Answer 4: He is happy to be near the beautiful women.
+
+
+          Please list the sub-questions following the requirement I mentioned before.
+
+          '
+        role: user
+      - content: 'Sub-question 1: What is the person on the left wearing?
+
+          Sub-question 2: Who is the person on the right?
+
+          Sub-question 3: What is the context or setting of the image?
+
+          Sub-question 4: Are there any other people or objects in the image that
+          could be influencing the person''s smile?'
+        role: assistant
+    more_asker: []
+    reasoner:
+    - - content: "You are an AI assistant who has rich visual commonsense knowledge\
+          \ and strong reasoning abilities.\nYou will be provided with:\n1. A main\
+          \ question about an image and four answer candidates.\n2. Although you won't\
+          \ be able to directly view the image, you will receive a general caption\
+          \ that might not be entirely precise but will provide an overall description.\n\
+          3. Some sub-questions decomposed from main question, and the corresponding\
+          \ answers are provided by a visual AI model. It's noted that the answers\
+          \ are not entirely precise.\n\nYour goal is:\nBased on sub-questions and\
+          \ corresponding answers, you should find the more likely answer from the\
+          \ four answer candidates. \n\nHere are the rules you should follow in your\
+          \ response:\n1. At first, demonstrate your reasoning and inference process\
+          \ within one paragraph. Start with the format of \"Analysis:\".\n2. If you\
+          \ have found the more likely answer, conclude the correct answer id in the\
+          \ format of \"More Likely Answer: 1/2/3/4\". Otherwise, conclude with \"\
+          More Likely Answer: We are not sure which option is correct\".\n\nResponse\
+          \ Format:\n\nAnalysis: xxxxxx.\n\nMore Likely Answer: 1/2/3/4.\n"
+        role: system
+      - content: "Imperfect Caption: a man in a military uniform is smiling\nMain\
+          \ Question: Why is person on the left smiling?\nFour choices: \nAnswer 1:\
+          \ He has just finished telling person on the right something good.\nAnswer\
+          \ 2: person on the left likes the attention he gets.\nAnswer 3: person on\
+          \ the left is laughing at a joke with other horse riders near him.\nAnswer\
+          \ 4: He is happy to be near the beautiful women.\n Existing Sub-questions\
+          \ and answers: \nSub-question: What is the person on the left wearing? Answer:\
+          \ red jacket\nSub-question: Who is the person on the right? Answer: man\
+          \ in red jacket\nSub-question: What is the context or setting of the image?\
+          \ Answer: The context or setting of the image is a formal event, possibly\
+          \ a wedding or a dinner party, where people are dressed in formal attire,\
+          \ including men in military uniforms and women in elegant dresses.\nSub-question:\
+          \ Are there any other people or objects in the image that could be influencing\
+          \ the person's smile? Answer: Yes\n\nPlease follow the above-mentioned instruction\
+          \ to list the Analysis and More Likely Answer.\n"
+        role: user
+      - content: 'Analysis: Based on the given information, we know that the person
+          on the left is wearing a military uniform and is in the context of a formal
+          event. The person on the right is also wearing a red jacket, which suggests
+          that they may have some connection or similarity. Additionally, there are
+          other people or objects in the image that could be influencing the person''s
+          smile. Given these details, it is more likely that the person on the left
+          is smiling because he has just finished telling the person on the right
+          something good, possibly related to their shared context or connection.
+
+
+          More Likely Answer: 1. He has just finished telling person on the right
+          something good.'
+        role: assistant
+  predict_answer: '1'
+  sub_answers:
+  - - red jacket
+    - man in red jacket
+    - The context or setting of the image is a formal event, possibly a wedding or
+      a dinner party, where people are dressed in formal attire, including men in
+      military uniforms and women in elegant dresses.
+    - 'Yes'
+  sub_questions:
+  - - What is the person on the left wearing?
+    - Who is the person on the right?
+    - What is the context or setting of the image?
+    - Are there any other people or objects in the image that could be influencing
+      the person's smile?
+  total_tokens: 1077
+  used_round: 1
+setting:
+  answer_choices:
+  - He has just finished telling person on the right something good.
+  - person on the left likes the attention he gets.
+  - person on the left is laughing at a joke with other horse riders near him.
+  - He is happy to be near the beautiful women.
+  answer_label: '4'
+  id: val-534
+  img_path: /fs/nexus-scratch/kwyang3/data/VCR/vcr1images/lsmdc_1044_Pride_And_Prejudice_Disk_Two/1044_Pride_And_Prejudice_Disk_Two_00.31.39.644-00.31.46.115@2.jpg
+  max_n_rounds: 4
+  question: Why is person on the left smiling?
+  question_id: null

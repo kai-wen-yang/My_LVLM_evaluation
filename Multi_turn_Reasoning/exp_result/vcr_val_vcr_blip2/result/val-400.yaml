@@ -1,0 +1,151 @@
+result:
+  caption: a woman is looking at herself in a mirror
+  chat_history:
+    init_asker:
+    - - content: 'You are an AI assistant who has rich visual commonsense knowledge
+          and strong reasoning abilities.
+
+          You will be provided with:
+
+          1. A main question about an image and four answer candidates.
+
+          2. Although you won''t be able to directly view the image, you will receive
+          a general caption that might not be entirely precise but will provide an
+          overall description.
+
+
+          Your goal is:
+
+          To effectively analyze the image and select the correct answer for the question,
+          you should break down the main question into several sub-questions that
+          address the key aspects of the image.
+
+
+          Here are the rules you should follow when listing the sub-questions.
+
+          1. Ensure that each sub-question is independent. It means the latter sub-questions
+          shouldn''t mention previous sub-questions.
+
+          2. List the sub-questions in the following format: "Sub-question 1: ...?;
+          Sub-question 2: ...?".
+
+          3. Each sub-question should start with "What".
+
+          4. Each sub-question should be short and easy to understand.
+
+          5. The sub-question are necessary to distinguish the correct answer.
+
+
+          Example:
+
+
+          Main question: What is happening in the image?
+
+          Sub-question 1: What objects or subjects are present in the image?
+
+          Sub-question 2: What actions or events is the person doing?
+
+          Sub-question 3: What are the emotions or expressions of the woman?
+
+          Sub-question 4: What is the brand of this car? '
+        role: system
+      - content: 'Imperfect Caption: a woman is looking at herself in a mirror
+
+          Main Question: What will person on the left probably do with the mirror?
+
+          Four choices:
+
+          Answer 1: person on the left is likely to use wineglass.
+
+          Answer 2: person on the left will look into the mirror.
+
+          Answer 3: person on the right will cut the hair of person on the left.
+
+          Answer 4: person on the right will go and open the item.
+
+
+          Please list the sub-questions following the requirement I mentioned before.
+
+          '
+        role: user
+      - content: 'Sub-question 1: What is the person on the left holding?
+
+          Sub-question 2: What is the person on the right doing?
+
+          Sub-question 3: What is the person on the left likely to do with the mirror?
+
+          Sub-question 4: What is the person on the right likely to do with the item?'
+        role: assistant
+    more_asker: []
+    reasoner:
+    - - content: "You are an AI assistant who has rich visual commonsense knowledge\
+          \ and strong reasoning abilities.\nYou will be provided with:\n1. A main\
+          \ question about an image and four answer candidates.\n2. Although you won't\
+          \ be able to directly view the image, you will receive a general caption\
+          \ that might not be entirely precise but will provide an overall description.\n\
+          3. Some sub-questions decomposed from main question, and the corresponding\
+          \ answers are provided by a visual AI model. It's noted that the answers\
+          \ are not entirely precise.\n\nYour goal is:\nBased on sub-questions and\
+          \ corresponding answers, you should find the more likely answer from the\
+          \ four answer candidates. \n\nHere are the rules you should follow in your\
+          \ response:\n1. At first, demonstrate your reasoning and inference process\
+          \ within one paragraph. Start with the format of \"Analysis:\".\n2. If you\
+          \ have found the more likely answer, conclude the correct answer id in the\
+          \ format of \"More Likely Answer: 1/2/3/4\". Otherwise, conclude with \"\
+          More Likely Answer: We are not sure which option is correct\".\n\nResponse\
+          \ Format:\n\nAnalysis: xxxxxx.\n\nMore Likely Answer: 1/2/3/4.\n"
+        role: system
+      - content: "Imperfect Caption: a woman is looking at herself in a mirror\nMain\
+          \ Question: What will person on the left probably do with the mirror?\n\
+          Four choices: \nAnswer 1: person on the left is likely to use wineglass.\n\
+          Answer 2: person on the left will look into the mirror.\nAnswer 3: person\
+          \ on the right will cut the hair of person on the left.\nAnswer 4: person\
+          \ on the right will go and open the item.\n Existing Sub-questions and answers:\
+          \ \nSub-question: What is the person on the left holding? Answer: cigarette\n\
+          Sub-question: What is the person on the right doing? Answer: looking in\
+          \ mirror\nSub-question: What is the person on the left likely to do with\
+          \ the mirror? Answer: look at herself\nSub-question: What is the person\
+          \ on the right likely to do with the item? Answer: put on makeup\n\nPlease\
+          \ follow the above-mentioned instruction to list the Analysis and More Likely\
+          \ Answer.\n"
+        role: user
+      - content: "Analysis: Based on the sub-questions and corresponding answers,\
+          \ we can infer that the person on the left is holding a cigarette and the\
+          \ person on the right is looking in the mirror. The person on the left is\
+          \ likely to use the mirror to look at herself, as indicated by the answer\
+          \ to the sub-question. The answer choices can be evaluated based on this\
+          \ information. Answer 1, which suggests that the person on the left will\
+          \ use a wineglass, does not align with the information provided. Answer\
+          \ 2, which states that the person on the left will look into the mirror,\
+          \ is consistent with the sub-question answer and seems to be the most likely\
+          \ option. Answer 3, which involves the person on the right cutting the hair\
+          \ of the person on the left, is not supported by the information given.\
+          \ Answer 4, which suggests that the person on the right will go and open\
+          \ the item, is unrelated to the mirror and does not fit the context. \n\n\
+          More Likely Answer: 2."
+        role: assistant
+  predict_answer: '2'
+  sub_answers:
+  - - cigarette
+    - looking in mirror
+    - look at herself
+    - put on makeup
+  sub_questions:
+  - - What is the person on the left holding?
+    - What is the person on the right doing?
+    - What is the person on the left likely to do with the mirror?
+    - What is the person on the right likely to do with the item?
+  total_tokens: 1118
+  used_round: 1
+setting:
+  answer_choices:
+  - person on the left is likely to use wineglass.
+  - person on the left will look into the mirror.
+  - person on the right will cut the hair of person on the left.
+  - person on the right will go and open the item.
+  answer_label: '2'
+  id: val-400
+  img_path: /fs/nexus-scratch/kwyang3/data/VCR/vcr1images/lsmdc_1010_TITANIC/1010_TITANIC_00.45.29.487-00.45.31.747@0.jpg
+  max_n_rounds: 4
+  question: What will person on the left probably do with the mirror?
+  question_id: null

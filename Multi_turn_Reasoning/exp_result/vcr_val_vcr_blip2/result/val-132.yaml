@@ -1,0 +1,158 @@
+result:
+  caption: a group of people standing on the deck of a ship
+  chat_history:
+    init_asker:
+    - - content: 'You are an AI assistant who has rich visual commonsense knowledge
+          and strong reasoning abilities.
+
+          You will be provided with:
+
+          1. A main question about an image and four answer candidates.
+
+          2. Although you won''t be able to directly view the image, you will receive
+          a general caption that might not be entirely precise but will provide an
+          overall description.
+
+
+          Your goal is:
+
+          To effectively analyze the image and select the correct answer for the question,
+          you should break down the main question into several sub-questions that
+          address the key aspects of the image.
+
+
+          Here are the rules you should follow when listing the sub-questions.
+
+          1. Ensure that each sub-question is independent. It means the latter sub-questions
+          shouldn''t mention previous sub-questions.
+
+          2. List the sub-questions in the following format: "Sub-question 1: ...?;
+          Sub-question 2: ...?".
+
+          3. Each sub-question should start with "What".
+
+          4. Each sub-question should be short and easy to understand.
+
+          5. The sub-question are necessary to distinguish the correct answer.
+
+
+          Example:
+
+
+          Main question: What is happening in the image?
+
+          Sub-question 1: What objects or subjects are present in the image?
+
+          Sub-question 2: What actions or events is the person doing?
+
+          Sub-question 3: What are the emotions or expressions of the woman?
+
+          Sub-question 4: What is the brand of this car? '
+        role: system
+      - content: 'Imperfect Caption: a group of people standing on the deck of a ship
+
+          Main Question: Why is person on the left here on this deck?
+
+          Four choices:
+
+          Answer 1: person on the left was caught committing a crime on a ship.
+
+          Answer 2: person on the left is the captain of the ship.
+
+          Answer 3: person on the left is looking for someone.
+
+          Answer 4: person on the left is person on the right child who is also on
+          the ship.
+
+
+          Please list the sub-questions following the requirement I mentioned before.
+
+          '
+        role: user
+      - content: 'Sub-question 1: What is the person on the left doing on the deck?
+
+          Sub-question 2: Are there any visible signs of criminal activity?
+
+          Sub-question 3: Is there any indication that the person on the left is in
+          a position of authority?
+
+          Sub-question 4: Is there any evidence that the person on the left is searching
+          for someone?
+
+          Sub-question 5: Is there any visual connection or interaction between the
+          person on the left and the person on the right?'
+        role: assistant
+    more_asker: []
+    reasoner:
+    - - content: "You are an AI assistant who has rich visual commonsense knowledge\
+          \ and strong reasoning abilities.\nYou will be provided with:\n1. A main\
+          \ question about an image and four answer candidates.\n2. Although you won't\
+          \ be able to directly view the image, you will receive a general caption\
+          \ that might not be entirely precise but will provide an overall description.\n\
+          3. Some sub-questions decomposed from main question, and the corresponding\
+          \ answers are provided by a visual AI model. It's noted that the answers\
+          \ are not entirely precise.\n\nYour goal is:\nBased on sub-questions and\
+          \ corresponding answers, you should find the more likely answer from the\
+          \ four answer candidates. \n\nHere are the rules you should follow in your\
+          \ response:\n1. At first, demonstrate your reasoning and inference process\
+          \ within one paragraph. Start with the format of \"Analysis:\".\n2. If you\
+          \ have found the more likely answer, conclude the correct answer id in the\
+          \ format of \"More Likely Answer: 1/2/3/4\". Otherwise, conclude with \"\
+          More Likely Answer: We are not sure which option is correct\".\n\nResponse\
+          \ Format:\n\nAnalysis: xxxxxx.\n\nMore Likely Answer: 1/2/3/4.\n"
+        role: system
+      - content: "Imperfect Caption: a group of people standing on the deck of a ship\n\
+          Main Question: Why is person on the left here on this deck?\nFour choices:\
+          \ \nAnswer 1: person on the left was caught committing a crime on a ship.\n\
+          Answer 2: person on the left is the captain of the ship.\nAnswer 3: person\
+          \ on the left is looking for someone.\nAnswer 4: person on the left is person\
+          \ on the right child who is also on the ship.\n Existing Sub-questions and\
+          \ answers: \nSub-question: What is the person on the left doing on the deck?\
+          \ Answer: shaking hands\nSub-question: Are there any visible signs of criminal\
+          \ activity? Answer: no\nSub-question: Is there any indication that the person\
+          \ on the left is in a position of authority? Answer: yes\nSub-question:\
+          \ Is there any evidence that the person on the left is searching for someone?\
+          \ Answer: yes\nSub-question: Is there any visual connection or interaction\
+          \ between the person on the left and the person on the right? Answer: yes\n\
+          \nPlease follow the above-mentioned instruction to list the Analysis and\
+          \ More Likely Answer.\n"
+        role: user
+      - content: "Analysis: Based on the given sub-questions and answers, we can infer\
+          \ that the person on the left is shaking hands, indicating a friendly interaction.\
+          \ There are no visible signs of criminal activity, so Answer 1 can be ruled\
+          \ out. The presence of the person on the left on the deck suggests that\
+          \ they have some authority, as indicated by the evidence of a position of\
+          \ authority. Additionally, there is evidence that the person on the left\
+          \ is searching for someone, as indicated by the visual connection and interaction\
+          \ with the person on the right. However, there is no information provided\
+          \ to support Answer 4, which states that the person on the left is the child\
+          \ of the person on the right. \n\nMore Likely Answer: 2"
+        role: assistant
+  predict_answer: '2'
+  sub_answers:
+  - - shaking hands
+    - 'no'
+    - 'yes'
+    - 'yes'
+    - 'yes'
+  sub_questions:
+  - - What is the person on the left doing on the deck?
+    - Are there any visible signs of criminal activity?
+    - Is there any indication that the person on the left is in a position of authority?
+    - Is there any evidence that the person on the left is searching for someone?
+    - Is there any visual connection or interaction between the person on the left
+      and the person on the right?
+  total_tokens: 1133
+  used_round: 1
+setting:
+  answer_choices:
+  - person on the left was caught committing a crime on a ship.
+  - person on the left is the captain of the ship.
+  - person on the left is looking for someone.
+  - person on the left is person on the right child who is also on the ship.
+  answer_label: '3'
+  id: val-132
+  img_path: /fs/nexus-scratch/kwyang3/data/VCR/vcr1images/lsmdc_1010_TITANIC/1010_TITANIC_02.59.56.669-03.00.05.734@1.jpg
+  max_n_rounds: 4
+  question: Why is person on the left here on this deck?
+  question_id: null

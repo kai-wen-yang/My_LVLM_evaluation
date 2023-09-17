@@ -1,0 +1,154 @@
+result:
+  caption: a large group of people wearing hats
+  chat_history:
+    init_asker:
+    - - content: 'You are an AI assistant who has rich visual commonsense knowledge
+          and strong reasoning abilities.
+
+          You will be provided with:
+
+          1. A main question about an image and four answer candidates.
+
+          2. Although you won''t be able to directly view the image, you will receive
+          a general caption that might not be entirely precise but will provide an
+          overall description.
+
+
+          Your goal is:
+
+          To effectively analyze the image and select the correct answer for the question,
+          you should break down the main question into several sub-questions that
+          address the key aspects of the image.
+
+
+          Here are the rules you should follow when listing the sub-questions.
+
+          1. Ensure that each sub-question is independent. It means the latter sub-questions
+          shouldn''t mention previous sub-questions.
+
+          2. List the sub-questions in the following format: "Sub-question 1: ...?;
+          Sub-question 2: ...?".
+
+          3. Each sub-question should start with "What".
+
+          4. Each sub-question should be short and easy to understand.
+
+          5. The sub-question are necessary to distinguish the correct answer.
+
+
+          Example:
+
+
+          Main question: What is happening in the image?
+
+          Sub-question 1: What objects or subjects are present in the image?
+
+          Sub-question 2: What actions or events is the person doing?
+
+          Sub-question 3: What are the emotions or expressions of the woman?
+
+          Sub-question 4: What is the brand of this car? '
+        role: system
+      - content: 'Imperfect Caption: a large group of people wearing hats
+
+          Main Question: What is person in the middle doing?
+
+          Four choices:
+
+          Answer 1: person in the middle is supporting person  on the right. he is
+          looking at person on the left in a threatening way.
+
+          Answer 2: He is trying to sell a vase to another person on the left.
+
+          Answer 3: He is holding a watermelon while watching something notable happen.
+
+          Answer 4: He is reaching for a pistol.
+
+
+          Please list the sub-questions following the requirement I mentioned before.
+
+          '
+        role: user
+      - content: 'Sub-question 1: What is the person in the middle holding or doing
+          with their hands?
+
+          Sub-question 2: What is the person on the right doing or how are they positioned?
+
+          Sub-question 3: What is the person on the left doing or how are they positioned?
+
+          Sub-question 4: What is the facial expression or body language of the person
+          in the middle?'
+        role: assistant
+    more_asker: []
+    reasoner:
+    - - content: "You are an AI assistant who has rich visual commonsense knowledge\
+          \ and strong reasoning abilities.\nYou will be provided with:\n1. A main\
+          \ question about an image and four answer candidates.\n2. Although you won't\
+          \ be able to directly view the image, you will receive a general caption\
+          \ that might not be entirely precise but will provide an overall description.\n\
+          3. Some sub-questions decomposed from main question, and the corresponding\
+          \ answers are provided by a visual AI model. It's noted that the answers\
+          \ are not entirely precise.\n\nYour goal is:\nBased on sub-questions and\
+          \ corresponding answers, you should find the more likely answer from the\
+          \ four answer candidates. \n\nHere are the rules you should follow in your\
+          \ response:\n1. At first, demonstrate your reasoning and inference process\
+          \ within one paragraph. Start with the format of \"Analysis:\".\n2. If you\
+          \ have found the more likely answer, conclude the correct answer id in the\
+          \ format of \"More Likely Answer: 1/2/3/4\". Otherwise, conclude with \"\
+          More Likely Answer: We are not sure which option is correct\".\n\nResponse\
+          \ Format:\n\nAnalysis: xxxxxx.\n\nMore Likely Answer: 1/2/3/4.\n"
+        role: system
+      - content: "Imperfect Caption: a large group of people wearing hats\nMain Question:\
+          \ What is person in the middle doing?\nFour choices: \nAnswer 1: person\
+          \ in the middle is supporting person  on the right. he is looking at person\
+          \ on the left in a threatening way.\nAnswer 2: He is trying to sell a vase\
+          \ to another person on the left.\nAnswer 3: He is holding a watermelon while\
+          \ watching something notable happen.\nAnswer 4: He is reaching for a pistol.\n\
+          \ Existing Sub-questions and answers: \nSub-question: What is the person\
+          \ in the middle holding or doing with their hands? Answer: nothing\nSub-question:\
+          \ What is the person on the right doing or how are they positioned? Answer:\
+          \ the person on the right is taking a picture\nSub-question: What is the\
+          \ person on the left doing or how are they positioned? Answer: the person\
+          \ on the left is posing for a picture\nSub-question: What is the facial\
+          \ expression or body language of the person in the middle? Answer: smiling\n\
+          \nPlease follow the above-mentioned instruction to list the Analysis and\
+          \ More Likely Answer.\n"
+        role: user
+      - content: 'Analysis: Based on the given sub-questions and corresponding answers,
+          we can infer that the person in the middle is not holding or doing anything
+          with their hands. The person on the right is taking a picture, and the person
+          on the left is posing for a picture. The facial expression of the person
+          in the middle is smiling. From this information, we can conclude that the
+          person in the middle is most likely participating in a group photo, smiling
+          and posing for the picture.
+
+
+          More Likely Answer: 3. He is holding a watermelon while watching something
+          notable happen.'
+        role: assistant
+  predict_answer: '3'
+  sub_answers:
+  - - nothing
+    - the person on the right is taking a picture
+    - the person on the left is posing for a picture
+    - smiling
+  sub_questions:
+  - - What is the person in the middle holding or doing with their hands?
+    - What is the person on the right doing or how are they positioned?
+    - What is the person on the left doing or how are they positioned?
+    - What is the facial expression or body language of the person in the middle?
+  total_tokens: 1075
+  used_round: 1
+setting:
+  answer_choices:
+  - person in the middle is supporting person  on the right. he is looking at person
+    on the left in a threatening way.
+  - He is trying to sell a vase to another person on the left.
+  - He is holding a watermelon while watching something notable happen.
+  - He is reaching for a pistol.
+  answer_label: '3'
+  id: val-1040
+  img_path: /fs/nexus-scratch/kwyang3/data/VCR/vcr1images/lsmdc_0016_O_Brother_Where_Art_Thou/0016_O_Brother_Where_Art_Thou_01.00.03.981-01.00.05.061@0.jpg
+  max_n_rounds: 4
+  question: What is person in the middle doing?
+  question_id: null

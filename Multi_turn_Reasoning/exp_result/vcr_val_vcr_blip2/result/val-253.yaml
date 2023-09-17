@@ -1,0 +1,281 @@
+result:
+  caption: a man wearing a hat is standing in front of a staircase
+  chat_history:
+    init_asker:
+    - - content: 'You are an AI assistant who has rich visual commonsense knowledge
+          and strong reasoning abilities.
+
+          You will be provided with:
+
+          1. A main question about an image and four answer candidates.
+
+          2. Although you won''t be able to directly view the image, you will receive
+          a general caption that might not be entirely precise but will provide an
+          overall description.
+
+
+          Your goal is:
+
+          To effectively analyze the image and select the correct answer for the question,
+          you should break down the main question into several sub-questions that
+          address the key aspects of the image.
+
+
+          Here are the rules you should follow when listing the sub-questions.
+
+          1. Ensure that each sub-question is independent. It means the latter sub-questions
+          shouldn''t mention previous sub-questions.
+
+          2. List the sub-questions in the following format: "Sub-question 1: ...?;
+          Sub-question 2: ...?".
+
+          3. Each sub-question should start with "What".
+
+          4. Each sub-question should be short and easy to understand.
+
+          5. The sub-question are necessary to distinguish the correct answer.
+
+
+          Example:
+
+
+          Main question: What is happening in the image?
+
+          Sub-question 1: What objects or subjects are present in the image?
+
+          Sub-question 2: What actions or events is the person doing?
+
+          Sub-question 3: What are the emotions or expressions of the woman?
+
+          Sub-question 4: What is the brand of this car? '
+        role: system
+      - content: 'Imperfect Caption: a man wearing a hat is standing in front of a
+          staircase
+
+          Main Question: What is person on the right looking at?
+
+          Four choices:
+
+          Answer 1: person on the right is looking at all the people down below.
+
+          Answer 2: person on the right is looking at what person on the left is grabbing.
+
+          Answer 3: person on the right is looking at person on the right trying to
+          help the person on the ground.
+
+          Answer 4: person on the right is looking at a fringed tapestry.
+
+
+          Please list the sub-questions following the requirement I mentioned before.
+
+          '
+        role: user
+      - content: 'Sub-question 1: What is the person on the left grabbing?
+
+          Sub-question 2: Who is the person on the ground and why do they need help?
+
+          Sub-question 3: What is the person on the right holding or doing?
+
+          Sub-question 4: What is the person on the right''s relationship with the
+          person on the ground?'
+        role: assistant
+    more_asker:
+    - - content: "You are an AI assistant who has rich visual commonsense knowledge\
+          \ and strong reasoning abilities.\nYou will be provided with:\n1. A main\
+          \ question about an image and four answer candidates.\n2. Although you won't\
+          \ be able to directly view the image, you will receive a general caption\
+          \ that might not be entirely precise but will provide an overall description.\n\
+          3. Some sub-questions decomposed from the main question, and the corresponding\
+          \ answers are provided by a visual AI model. It's noted that the answers\
+          \ are not entirely precise.\n4. An analysis of whether the given sub-questions\
+          \ and sub-answers can help to solve the original main question.  \n\nThe\
+          \ current sub-questions and sub-answers are not sufficient to solve the\
+          \ main question. Your goal is:\nBased on existing sub-questions and analysis,\
+          \ you should pose additional questions, that can gather more information\
+          \ and are necessary to solve the main question.\n\nHere are the rules you\
+          \ should follow when listing additional sub-questions.\n1. Ensure that each\
+          \ sub-question is independent. It means the latter sub-questions shouldn't\
+          \ mention previous sub-questions.\n2. List the sub-questions in the following\
+          \ format: \"Additional Sub-question 1: ...?; Additional Sub-question 2:\
+          \ ...?\".\n3. Each sub-question should start with \"What\".\n4. Each sub-question\
+          \ should be short and easy to understand.\n5. The sub-question are necessary\
+          \ to distinguish the correct answer.\n\nFormat Example:\n\nAdditional Sub-question\
+          \ 1: xxxx\nAdditional Sub-question 2: xxxx \nAdditional Sub-question 3:\
+          \ xxxx\nAdditional Sub-question 4: xxxx "
+        role: system
+      - content: "Imperfect Caption: a man wearing a hat is standing in front of a\
+          \ staircase\nMain Question: What is person on the right looking at?\nFour\
+          \ choices: \nAnswer 1: person on the right is looking at all the people\
+          \ down below.\nAnswer 2: person on the right is looking at what person on\
+          \ the left is grabbing.\nAnswer 3: person on the right is looking at person\
+          \ on the right trying to help the person on the ground.\nAnswer 4: person\
+          \ on the right is looking at a fringed tapestry.\n Sub-questions and answers:\
+          \ \nSub-question: What is the person on the left grabbing? Answer: nothing\n\
+          Sub-question: Who is the person on the ground and why do they need help?\
+          \ Answer: drunk\nSub-question: What is the person on the right holding or\
+          \ doing? Answer: umbrella\nSub-question: What is the person on the right's\
+          \ relationship with the person on the ground? Answer: friend\n Analysis:\
+          \ \nBased on the given sub-questions and answers, we can infer that the\
+          \ person on the right is holding an umbrella and is a friend of the person\
+          \ on the ground who is drunk and needs help. The person on the left is not\
+          \ grabbing anything. However, it is not clear what the person on the right\
+          \ is looking at. None of the sub-questions provide information about what\
+          \ the person on the right is looking at. Therefore, we cannot determine\
+          \ the more likely answer from the four choices.\nPlease list the additional\
+          \ sub-questions following the requirement I mentioned before.\n"
+        role: user
+      - content: "Additional Sub-question 1: What is the direction of the person's\
+          \ gaze on the right? \nAdditional Sub-question 2: What is the person on\
+          \ the right's body language suggesting about their focus or attention? \n\
+          Additional Sub-question 3: Are there any objects or people in the vicinity\
+          \ that could be attracting the person on the right's attention? \nAdditional\
+          \ Sub-question 4: Is there any movement or action happening in the background\
+          \ that could be catching the person on the right's eye?"
+        role: assistant
+    reasoner:
+    - - content: "You are an AI assistant who has rich visual commonsense knowledge\
+          \ and strong reasoning abilities.\nYou will be provided with:\n1. A main\
+          \ question about an image and four answer candidates.\n2. Although you won't\
+          \ be able to directly view the image, you will receive a general caption\
+          \ that might not be entirely precise but will provide an overall description.\n\
+          3. Some sub-questions decomposed from main question, and the corresponding\
+          \ answers are provided by a visual AI model. It's noted that the answers\
+          \ are not entirely precise.\n\nYour goal is:\nBased on sub-questions and\
+          \ corresponding answers, you should find the more likely answer from the\
+          \ four answer candidates. \n\nHere are the rules you should follow in your\
+          \ response:\n1. At first, demonstrate your reasoning and inference process\
+          \ within one paragraph. Start with the format of \"Analysis:\".\n2. If you\
+          \ have found the more likely answer, conclude the correct answer id in the\
+          \ format of \"More Likely Answer: 1/2/3/4\". Otherwise, conclude with \"\
+          More Likely Answer: We are not sure which option is correct\".\n\nResponse\
+          \ Format:\n\nAnalysis: xxxxxx.\n\nMore Likely Answer: 1/2/3/4.\n"
+        role: system
+      - content: "Imperfect Caption: a man wearing a hat is standing in front of a\
+          \ staircase\nMain Question: What is person on the right looking at?\nFour\
+          \ choices: \nAnswer 1: person on the right is looking at all the people\
+          \ down below.\nAnswer 2: person on the right is looking at what person on\
+          \ the left is grabbing.\nAnswer 3: person on the right is looking at person\
+          \ on the right trying to help the person on the ground.\nAnswer 4: person\
+          \ on the right is looking at a fringed tapestry.\n Existing Sub-questions\
+          \ and answers: \nSub-question: What is the person on the left grabbing?\
+          \ Answer: nothing\nSub-question: Who is the person on the ground and why\
+          \ do they need help? Answer: drunk\nSub-question: What is the person on\
+          \ the right holding or doing? Answer: umbrella\nSub-question: What is the\
+          \ person on the right's relationship with the person on the ground? Answer:\
+          \ friend\n\nPlease follow the above-mentioned instruction to list the Analysis\
+          \ and More Likely Answer.\n"
+        role: user
+      - content: 'Analysis: Based on the given sub-questions and answers, we can infer
+          that the person on the right is holding an umbrella and is a friend of the
+          person on the ground who is drunk and needs help. The person on the left
+          is not grabbing anything. However, it is not clear what the person on the
+          right is looking at. None of the sub-questions provide information about
+          what the person on the right is looking at. Therefore, we cannot determine
+          the more likely answer from the four choices.
+
+
+          More Likely Answer: We are not sure which option is correct.'
+        role: assistant
+    - - content: "You are an AI assistant who has rich visual commonsense knowledge\
+          \ and strong reasoning abilities.\nYou will be provided with:\n1. A main\
+          \ question about an image and four answer candidates.\n2. Although you won't\
+          \ be able to directly view the image, you will receive a general caption\
+          \ that might not be entirely precise but will provide an overall description.\n\
+          3. Some sub-questions decomposed from main question, and the corresponding\
+          \ answers are provided by a visual AI model. It's noted that the answers\
+          \ are not entirely precise.\n\nYour goal is:\nBased on sub-questions and\
+          \ corresponding answers, you should find the more likely answer from the\
+          \ four answer candidates. \n\nHere are the rules you should follow in your\
+          \ response:\n1. At first, demonstrate your reasoning and inference process\
+          \ within one paragraph. Start with the format of \"Analysis:\".\n2. If you\
+          \ have found the more likely answer, conclude the correct answer id in the\
+          \ format of \"More Likely Answer: 1/2/3/4\". Otherwise, conclude with \"\
+          More Likely Answer: We are not sure which option is correct\".\n\nResponse\
+          \ Format:\n\nAnalysis: xxxxxx.\n\nMore Likely Answer: 1/2/3/4.\n"
+        role: system
+      - content: "Imperfect Caption: a man wearing a hat is standing in front of a\
+          \ staircase\nMain Question: What is person on the right looking at?\nFour\
+          \ choices: \nAnswer 1: person on the right is looking at all the people\
+          \ down below.\nAnswer 2: person on the right is looking at what person on\
+          \ the left is grabbing.\nAnswer 3: person on the right is looking at person\
+          \ on the right trying to help the person on the ground.\nAnswer 4: person\
+          \ on the right is looking at a fringed tapestry.\n Existing Sub-questions\
+          \ and answers: \nSub-question: What is the person on the left grabbing?\
+          \ Answer: nothing\nSub-question: Who is the person on the ground and why\
+          \ do they need help? Answer: drunk\nSub-question: What is the person on\
+          \ the right holding or doing? Answer: umbrella\nSub-question: What is the\
+          \ person on the right's relationship with the person on the ground? Answer:\
+          \ friend\nSub-question: What is the direction of the person's gaze on the\
+          \ right? Answer: up\nSub-question: What is the person on the right's body\
+          \ language suggesting about their focus or attention? Answer: The person\
+          \ on the right's body language suggests that they are focused or paying\
+          \ attention to the person on the left.\nSub-question: Are there any objects\
+          \ or people in the vicinity that could be attracting the person on the right's\
+          \ attention? Answer: Yes, there are objects and people in the vicinity that\
+          \ could be attracting the person on the right's attention. In the image,\
+          \ a man wearing a hat is standing at the bottom of a staircase, looking\
+          \ up towards a woman who is standing at the top of the stairs. Additionally,\
+          \ there is a painting hanging on the wall near the staircase, which could\
+          \ also be capturing the man's attention.\nSub-question: Is there any movement\
+          \ or action happening in the background that could be catching the person\
+          \ on the right's eye? Answer: yes\n\nPlease follow the above-mentioned instruction\
+          \ to list the Analysis and More Likely Answer.\n"
+        role: user
+      - content: "Analysis: Based on the sub-questions and corresponding answers,\
+          \ we can infer that the person on the right is looking at the person on\
+          \ the left. The person on the left is not grabbing anything, so answer 2\
+          \ can be ruled out. The person on the ground is drunk and needs help, indicating\
+          \ a potential reason for the person on the right to be looking in that direction.\
+          \ The person on the right is holding an umbrella, which suggests that they\
+          \ might be trying to help or protect the person on the ground. The person\
+          \ on the right's body language also indicates that they are focused on the\
+          \ person on the left. There are objects and people in the vicinity that\
+          \ could be attracting the person on the right's attention, such as the woman\
+          \ at the top of the stairs and the painting on the wall. Additionally, there\
+          \ is movement or action happening in the background that could be catching\
+          \ the person on the right's eye. \n\nMore Likely Answer: 3. person on the\
+          \ right is looking at person on the right trying to help the person on the\
+          \ ground."
+        role: assistant
+  predict_answer: '3'
+  sub_answers:
+  - - nothing
+    - drunk
+    - umbrella
+    - friend
+  - - up
+    - The person on the right's body language suggests that they are focused or paying
+      attention to the person on the left.
+    - Yes, there are objects and people in the vicinity that could be attracting the
+      person on the right's attention. In the image, a man wearing a hat is standing
+      at the bottom of a staircase, looking up towards a woman who is standing at
+      the top of the stairs. Additionally, there is a painting hanging on the wall
+      near the staircase, which could also be capturing the man's attention.
+    - 'yes'
+  sub_questions:
+  - - What is the person on the left grabbing?
+    - Who is the person on the ground and why do they need help?
+    - What is the person on the right holding or doing?
+    - What is the person on the right's relationship with the person on the ground?
+  - - What is the direction of the person's gaze on the right?
+    - What is the person on the right's body language suggesting about their focus
+      or attention?
+    - Are there any objects or people in the vicinity that could be attracting the
+      person on the right's attention?
+    - Is there any movement or action happening in the background that could be catching
+      the person on the right's eye?
+  total_tokens: 2681
+  used_round: 2
+setting:
+  answer_choices:
+  - person on the right is looking at all the people down below.
+  - person on the right is looking at what person on the left is grabbing.
+  - person on the right is looking at person on the right trying to help the person
+    on the ground.
+  - person on the right is looking at a fringed tapestry.
+  answer_label: '4'
+  id: val-253
+  img_path: /fs/nexus-scratch/kwyang3/data/VCR/vcr1images/lsmdc_0010_Frau_Ohne_Gewissen/0010_Frau_Ohne_Gewissen_00.07.57.285-00.07.57.460@0.jpg
+  max_n_rounds: 4
+  question: What is person on the right looking at?
+  question_id: null

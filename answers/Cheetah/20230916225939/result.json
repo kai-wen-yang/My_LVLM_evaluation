@@ -1,0 +1,7 @@
+{
+    "ImageNet": {
+        "has_word": 12.5,
+        "exact match": 0.0,
+        "mean_per_class_acc": 12.18652037617555
+    }
+}

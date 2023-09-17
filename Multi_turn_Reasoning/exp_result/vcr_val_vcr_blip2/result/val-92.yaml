@@ -1,0 +1,159 @@
+result:
+  caption: people in a room with a desk
+  chat_history:
+    init_asker:
+    - - content: 'You are an AI assistant who has rich visual commonsense knowledge
+          and strong reasoning abilities.
+
+          You will be provided with:
+
+          1. A main question about an image and four answer candidates.
+
+          2. Although you won''t be able to directly view the image, you will receive
+          a general caption that might not be entirely precise but will provide an
+          overall description.
+
+
+          Your goal is:
+
+          To effectively analyze the image and select the correct answer for the question,
+          you should break down the main question into several sub-questions that
+          address the key aspects of the image.
+
+
+          Here are the rules you should follow when listing the sub-questions.
+
+          1. Ensure that each sub-question is independent. It means the latter sub-questions
+          shouldn''t mention previous sub-questions.
+
+          2. List the sub-questions in the following format: "Sub-question 1: ...?;
+          Sub-question 2: ...?".
+
+          3. Each sub-question should start with "What".
+
+          4. Each sub-question should be short and easy to understand.
+
+          5. The sub-question are necessary to distinguish the correct answer.
+
+
+          Example:
+
+
+          Main question: What is happening in the image?
+
+          Sub-question 1: What objects or subjects are present in the image?
+
+          Sub-question 2: What actions or events is the person doing?
+
+          Sub-question 3: What are the emotions or expressions of the woman?
+
+          Sub-question 4: What is the brand of this car? '
+        role: system
+      - content: 'Imperfect Caption: people in a room with a desk
+
+          Main Question: What is person on the left going to do about it?
+
+          Four choices:
+
+          Answer 1: person on the left is going to try to weed out corruption in his
+          high shcool.
+
+          Answer 2: He '' s going to run water through it.
+
+          Answer 3: He will call someone to negotiate.
+
+          Answer 4: person on the right is going to finish his story with person on
+          the left.
+
+
+          Please list the sub-questions following the requirement I mentioned before.
+
+          '
+        role: user
+      - content: 'Sub-question 1: What is the person on the left holding or interacting
+          with?
+
+          Sub-question 2: What is the expression or body language of the person on
+          the left?
+
+          Sub-question 3: What is the context or setting of the room?
+
+          Sub-question 4: Are there any other objects or people in the room that might
+          provide clues about what the person on the left is going to do?'
+        role: assistant
+    more_asker: []
+    reasoner:
+    - - content: "You are an AI assistant who has rich visual commonsense knowledge\
+          \ and strong reasoning abilities.\nYou will be provided with:\n1. A main\
+          \ question about an image and four answer candidates.\n2. Although you won't\
+          \ be able to directly view the image, you will receive a general caption\
+          \ that might not be entirely precise but will provide an overall description.\n\
+          3. Some sub-questions decomposed from main question, and the corresponding\
+          \ answers are provided by a visual AI model. It's noted that the answers\
+          \ are not entirely precise.\n\nYour goal is:\nBased on sub-questions and\
+          \ corresponding answers, you should find the more likely answer from the\
+          \ four answer candidates. \n\nHere are the rules you should follow in your\
+          \ response:\n1. At first, demonstrate your reasoning and inference process\
+          \ within one paragraph. Start with the format of \"Analysis:\".\n2. If you\
+          \ have found the more likely answer, conclude the correct answer id in the\
+          \ format of \"More Likely Answer: 1/2/3/4\". Otherwise, conclude with \"\
+          More Likely Answer: We are not sure which option is correct\".\n\nResponse\
+          \ Format:\n\nAnalysis: xxxxxx.\n\nMore Likely Answer: 1/2/3/4.\n"
+        role: system
+      - content: "Imperfect Caption: people in a room with a desk\nMain Question:\
+          \ What is person on the left going to do about it?\nFour choices: \nAnswer\
+          \ 1: person on the left is going to try to weed out corruption in his high\
+          \ shcool.\nAnswer 2: He ' s going to run water through it.\nAnswer 3: He\
+          \ will call someone to negotiate.\nAnswer 4: person on the right is going\
+          \ to finish his story with person on the left.\n Existing Sub-questions\
+          \ and answers: \nSub-question: What is the person on the left holding or\
+          \ interacting with? Answer: scissors\nSub-question: What is the expression\
+          \ or body language of the person on the left? Answer: angry\nSub-question:\
+          \ What is the context or setting of the room? Answer: office\nSub-question:\
+          \ Are there any other objects or people in the room that might provide clues\
+          \ about what the person on the left is going to do? Answer: no\n\nPlease\
+          \ follow the above-mentioned instruction to list the Analysis and More Likely\
+          \ Answer.\n"
+        role: user
+      - content: 'Analysis: Based on the given information, we know that the person
+          on the left is holding scissors and appears to be angry. The room is described
+          as an office, and there are no other objects or people in the room that
+          might provide clues about what the person on the left is going to do. Given
+          these details, it is unlikely that the person on the left is going to run
+          water through something or finish a story with the person on the right.
+          The options of "person on the left is going to try to weed out corruption
+          in his high school" and "he will call someone to negotiate" seem more plausible.
+          However, since the person is described as angry and holding scissors, it
+          is more likely that they are going to take some sort of action to address
+          the situation directly. Therefore, the more likely answer is Answer 1: person
+          on the left is going to try to weed out corruption in his high school.
+
+
+          More Likely Answer: 1.'
+        role: assistant
+  predict_answer: '1'
+  sub_answers:
+  - - scissors
+    - angry
+    - office
+    - 'no'
+  sub_questions:
+  - - What is the person on the left holding or interacting with?
+    - What is the expression or body language of the person on the left?
+    - What is the context or setting of the room?
+    - Are there any other objects or people in the room that might provide clues about
+      what the person on the left is going to do?
+  total_tokens: 1141
+  used_round: 1
+setting:
+  answer_choices:
+  - person on the left is going to try to weed out corruption in his high shcool.
+  - He ' s going to run water through it.
+  - He will call someone to negotiate.
+  - person on the right is going to finish his story with person on the left.
+  answer_label: '3'
+  id: val-92
+  img_path: /fs/nexus-scratch/kwyang3/data/VCR/vcr1images/lsmdc_0014_Ist_das_Leben_nicht_schoen/0014_Ist_das_Leben_nicht_schoen_00.08.59.255-00.09.00.369@0.jpg
+  max_n_rounds: 4
+  question: What is person on the left going to do about it?
+  question_id: null

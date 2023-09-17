@@ -1,0 +1,161 @@
+result:
+  caption: a woman in a red dress talking to a man in a suit
+  chat_history:
+    init_asker:
+    - - content: 'You are an AI assistant who has rich visual commonsense knowledge
+          and strong reasoning abilities.
+
+          You will be provided with:
+
+          1. A main question about an image and four answer candidates.
+
+          2. Although you won''t be able to directly view the image, you will receive
+          a general caption that might not be entirely precise but will provide an
+          overall description.
+
+
+          Your goal is:
+
+          To effectively analyze the image and select the correct answer for the question,
+          you should break down the main question into several sub-questions that
+          address the key aspects of the image.
+
+
+          Here are the rules you should follow when listing the sub-questions.
+
+          1. Ensure that each sub-question is independent. It means the latter sub-questions
+          shouldn''t mention previous sub-questions.
+
+          2. List the sub-questions in the following format: "Sub-question 1: ...?;
+          Sub-question 2: ...?".
+
+          3. Each sub-question should start with "What".
+
+          4. Each sub-question should be short and easy to understand.
+
+          5. The sub-question are necessary to distinguish the correct answer.
+
+
+          Example:
+
+
+          Main question: What is happening in the image?
+
+          Sub-question 1: What objects or subjects are present in the image?
+
+          Sub-question 2: What actions or events is the person doing?
+
+          Sub-question 3: What are the emotions or expressions of the woman?
+
+          Sub-question 4: What is the brand of this car? '
+        role: system
+      - content: 'Imperfect Caption: a woman in a red dress talking to a man in a
+          suit
+
+          Main Question: What is person in the middle going to do next?
+
+          Four choices:
+
+          Answer 1: person on the right is going to knock on the door.
+
+          Answer 2: person on the left is going to jump behind the bush and ambush
+          person in the middle.
+
+          Answer 3: person in the middle is going to ask person on the left out on
+          a date.
+
+          Answer 4: person on the left is going to start running home.
+
+
+          Please list the sub-questions following the requirement I mentioned before.
+
+          '
+        role: user
+      - content: 'Sub-question 1: What is the person in the middle currently doing?
+
+          Sub-question 2: What is the body language of the person in the middle?
+
+          Sub-question 3: What is the facial expression of the person in the middle?
+
+          Sub-question 4: What is the relationship between the person in the middle
+          and the other two individuals?'
+        role: assistant
+    more_asker: []
+    reasoner:
+    - - content: "You are an AI assistant who has rich visual commonsense knowledge\
+          \ and strong reasoning abilities.\nYou will be provided with:\n1. A main\
+          \ question about an image and four answer candidates.\n2. Although you won't\
+          \ be able to directly view the image, you will receive a general caption\
+          \ that might not be entirely precise but will provide an overall description.\n\
+          3. Some sub-questions decomposed from main question, and the corresponding\
+          \ answers are provided by a visual AI model. It's noted that the answers\
+          \ are not entirely precise.\n\nYour goal is:\nBased on sub-questions and\
+          \ corresponding answers, you should find the more likely answer from the\
+          \ four answer candidates. \n\nHere are the rules you should follow in your\
+          \ response:\n1. At first, demonstrate your reasoning and inference process\
+          \ within one paragraph. Start with the format of \"Analysis:\".\n2. If you\
+          \ have found the more likely answer, conclude the correct answer id in the\
+          \ format of \"More Likely Answer: 1/2/3/4\". Otherwise, conclude with \"\
+          More Likely Answer: We are not sure which option is correct\".\n\nResponse\
+          \ Format:\n\nAnalysis: xxxxxx.\n\nMore Likely Answer: 1/2/3/4.\n"
+        role: system
+      - content: "Imperfect Caption: a woman in a red dress talking to a man in a\
+          \ suit\nMain Question: What is person in the middle going to do next?\n\
+          Four choices: \nAnswer 1: person on the right is going to knock on the door.\n\
+          Answer 2: person on the left is going to jump behind the bush and ambush\
+          \ person in the middle.\nAnswer 3: person in the middle is going to ask\
+          \ person on the left out on a date.\nAnswer 4: person on the left is going\
+          \ to start running home.\n Existing Sub-questions and answers: \nSub-question:\
+          \ What is the person in the middle currently doing? Answer: smiling\nSub-question:\
+          \ What is the body language of the person in the middle? Answer: smiling\n\
+          Sub-question: What is the facial expression of the person in the middle?\
+          \ Answer: smiling\nSub-question: What is the relationship between the person\
+          \ in the middle and the other two individuals? Answer: friends\n\nPlease\
+          \ follow the above-mentioned instruction to list the Analysis and More Likely\
+          \ Answer.\n"
+        role: user
+      - content: 'Analysis: Based on the given sub-questions and answers, we can infer
+          that the person in the middle is currently smiling, indicating a positive
+          and friendly interaction. The body language and facial expression also suggest
+          a friendly demeanor. Additionally, the relationship between the person in
+          the middle and the other two individuals is described as friends. Considering
+          these factors, it is unlikely that the person on the left would jump behind
+          a bush and ambush the person in the middle, as it contradicts the friendly
+          nature of the interaction. It is also unlikely that the person on the left
+          would start running home, as there is no indication of any negative or threatening
+          situation. The person on the right knocking on the door seems unrelated
+          to the given information. Therefore, the more likely answer is that the
+          person in the middle is going to ask the person on the left out on a date,
+          as it aligns with the positive interaction, friendly relationship, and the
+          possibility of a romantic interest.
+
+
+          More Likely Answer: 3. person in the middle is going to ask person on the
+          left out on a date.'
+        role: assistant
+  predict_answer: '3'
+  sub_answers:
+  - - smiling
+    - smiling
+    - smiling
+    - friends
+  sub_questions:
+  - - What is the person in the middle currently doing?
+    - What is the body language of the person in the middle?
+    - What is the facial expression of the person in the middle?
+    - What is the relationship between the person in the middle and the other two
+      individuals?
+  total_tokens: 1163
+  used_round: 1
+setting:
+  answer_choices:
+  - person on the right is going to knock on the door.
+  - person on the left is going to jump behind the bush and ambush person in the middle.
+  - person in the middle is going to ask person on the left out on a date.
+  - person on the left is going to start running home.
+  answer_label: '3'
+  id: val-525
+  img_path: /fs/nexus-scratch/kwyang3/data/VCR/vcr1images/lsmdc_3088_WHATS_YOUR_NUMBER/3088_WHATS_YOUR_NUMBER_00.54.53.266-00.55.01.959@2.jpg
+  max_n_rounds: 4
+  question: What is person in the middle going to do next?
+  question_id: null

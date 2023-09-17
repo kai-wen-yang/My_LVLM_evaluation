@@ -1,0 +1,159 @@
+result:
+  caption: an older woman is being escorted by two police officers
+  chat_history:
+    init_asker:
+    - - content: 'You are an AI assistant who has rich visual commonsense knowledge
+          and strong reasoning abilities.
+
+          You will be provided with:
+
+          1. A main question about an image and four answer candidates.
+
+          2. Although you won''t be able to directly view the image, you will receive
+          a general caption that might not be entirely precise but will provide an
+          overall description.
+
+
+          Your goal is:
+
+          To effectively analyze the image and select the correct answer for the question,
+          you should break down the main question into several sub-questions that
+          address the key aspects of the image.
+
+
+          Here are the rules you should follow when listing the sub-questions.
+
+          1. Ensure that each sub-question is independent. It means the latter sub-questions
+          shouldn''t mention previous sub-questions.
+
+          2. List the sub-questions in the following format: "Sub-question 1: ...?;
+          Sub-question 2: ...?".
+
+          3. Each sub-question should start with "What".
+
+          4. Each sub-question should be short and easy to understand.
+
+          5. The sub-question are necessary to distinguish the correct answer.
+
+
+          Example:
+
+
+          Main question: What is happening in the image?
+
+          Sub-question 1: What objects or subjects are present in the image?
+
+          Sub-question 2: What actions or events is the person doing?
+
+          Sub-question 3: What are the emotions or expressions of the woman?
+
+          Sub-question 4: What is the brand of this car? '
+        role: system
+      - content: 'Imperfect Caption: an older woman is being escorted by two police
+          officers
+
+          Main Question: Why is person on the left upset?
+
+          Four choices:
+
+          Answer 1: person on the right is upset because person on the left is acting
+          weird in the doorway.
+
+          Answer 2: person on the left is upset because they are being arrested.
+
+          Answer 3: Something bad just happened.
+
+          Answer 4: person on the left can not believe person on the right are drinking
+          beer at a classy wine - drinking event.
+
+
+          Please list the sub-questions following the requirement I mentioned before.
+
+          '
+        role: user
+      - content: 'Sub-question 1: What is the person on the left doing?
+
+          Sub-question 2: What is the expression on the person''s face on the left?
+
+          Sub-question 3: What is the person on the right doing?
+
+          Sub-question 4: What is the context or setting of the image?'
+        role: assistant
+    more_asker: []
+    reasoner:
+    - - content: "You are an AI assistant who has rich visual commonsense knowledge\
+          \ and strong reasoning abilities.\nYou will be provided with:\n1. A main\
+          \ question about an image and four answer candidates.\n2. Although you won't\
+          \ be able to directly view the image, you will receive a general caption\
+          \ that might not be entirely precise but will provide an overall description.\n\
+          3. Some sub-questions decomposed from main question, and the corresponding\
+          \ answers are provided by a visual AI model. It's noted that the answers\
+          \ are not entirely precise.\n\nYour goal is:\nBased on sub-questions and\
+          \ corresponding answers, you should find the more likely answer from the\
+          \ four answer candidates. \n\nHere are the rules you should follow in your\
+          \ response:\n1. At first, demonstrate your reasoning and inference process\
+          \ within one paragraph. Start with the format of \"Analysis:\".\n2. If you\
+          \ have found the more likely answer, conclude the correct answer id in the\
+          \ format of \"More Likely Answer: 1/2/3/4\". Otherwise, conclude with \"\
+          More Likely Answer: We are not sure which option is correct\".\n\nResponse\
+          \ Format:\n\nAnalysis: xxxxxx.\n\nMore Likely Answer: 1/2/3/4.\n"
+        role: system
+      - content: "Imperfect Caption: an older woman is being escorted by two police\
+          \ officers\nMain Question: Why is person on the left upset?\nFour choices:\
+          \ \nAnswer 1: person on the right is upset because person on the left is\
+          \ acting weird in the doorway.\nAnswer 2: person on the left is upset because\
+          \ they are being arrested.\nAnswer 3: Something bad just happened.\nAnswer\
+          \ 4: person on the left can not believe person on the right are drinking\
+          \ beer at a classy wine - drinking event.\n Existing Sub-questions and answers:\
+          \ \nSub-question: What is the person on the left doing? Answer: arresting\n\
+          Sub-question: What is the expression on the person's face on the left? Answer:\
+          \ scared\nSub-question: What is the person on the right doing? Answer: grabbing\n\
+          Sub-question: What is the context or setting of the image? Answer: The context\
+          \ or setting of the image is a police station.\n\nPlease follow the above-mentioned\
+          \ instruction to list the Analysis and More Likely Answer.\n"
+        role: user
+      - content: 'Analysis: Based on the sub-questions and corresponding answers,
+          we can infer that the person on the left is upset because they are being
+          arrested. The answer to the sub-question "What is the person on the left
+          doing?" indicates that the person on the left is arresting someone, which
+          suggests that they are likely a police officer. The answer to the sub-question
+          "What is the expression on the person''s face on the left?" indicates that
+          the person on the left is scared, which aligns with the idea that they are
+          upset about their own situation. Additionally, the answer to the sub-question
+          "What is the person on the right doing?" suggests that the person on the
+          right is grabbing something, which could be interpreted as them restraining
+          or apprehending the person on the left. The context or setting of the image
+          being a police station further supports the idea that the person on the
+          left is upset because they are being arrested.
+
+
+          More Likely Answer: 2. person on the left is upset because they are being
+          arrested.'
+        role: assistant
+  predict_answer: '2'
+  sub_answers:
+  - - arresting
+    - scared
+    - grabbing
+    - The context or setting of the image is a police station.
+  sub_questions:
+  - - What is the person on the left doing?
+    - What is the expression on the person's face on the left?
+    - What is the person on the right doing?
+    - What is the context or setting of the image?
+  total_tokens: 1130
+  used_round: 1
+setting:
+  answer_choices:
+  - person on the right is upset because person on the left is acting weird in the
+    doorway.
+  - person on the left is upset because they are being arrested.
+  - Something bad just happened.
+  - person on the left can not believe person on the right are drinking beer at a
+    classy wine - drinking event.
+  answer_label: '2'
+  id: val-1020
+  img_path: /fs/nexus-scratch/kwyang3/data/VCR/vcr1images/lsmdc_1010_TITANIC/1010_TITANIC_02.07.26.146-02.07.27.803@0.jpg
+  max_n_rounds: 4
+  question: Why is person on the left upset?
+  question_id: null
