@@ -16,7 +16,7 @@ def evaluate_zero_shot_image_classification(
     time,
     batch_size=1,
     answer_path='answers',
-    question='Classify the main object in the image.',
+    question='What is the object in the image?',
     max_new_tokens=16,
     per_class_acc=True,
 ):
