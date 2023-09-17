@@ -13,7 +13,7 @@ model:
   num_query_token: 32
 
   # Vicuna
-  llama_model: "path_to_vicuna_v0_7B"
+  llama_model: "/fs/nexus-scratch/kwyang3/models/vicuna-7b-v0"
 
   # generation configs
   prompt: ""
