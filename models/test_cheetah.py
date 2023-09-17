@@ -34,15 +34,14 @@ class TestCheetah:
     
     @torch.no_grad()
     def batch_generate(self, image_list, question_list, max_new_tokens=128):
-        # imgs = [get_image(img) for img in image_list]
-        # imgs = [self.vis_processors["eval"](x) for x in imgs]
-        # imgs = torch.stack(imgs, dim=0).to(self.device)
-        # output = self.model.generate({"image": imgs, "prompt": question_list}, max_length=max_new_tokens)
-        raw_img_list = []
-        for image in image_list:
-            raw_img_list.append([image])
+        # raw_img_list = []
+        # for image in image_list:
+        #     raw_img_list.append([image])
 
-        context = ["<ImageHere> "+ques for ques in question_list]
-        output = self.chat.batch_answer(raw_img_list, context, max_new_tokens=max_new_tokens)
-
-        return output
+        # context = ["<ImageHere> "+ques for ques in question_list]
+        # output = self.chat.batch_answer(raw_img_list, context, max_new_tokens=max_new_tokens)
+        outputs = []
+        for image, question in zip(image_list, question_list)
+            output = self.chat.answer([image], question, max_new_tokens=max_new_tokens)
+            outputs.append(output)
+        return outputs
