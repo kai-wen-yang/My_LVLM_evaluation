@@ -140,6 +140,7 @@ class Chat:
         for raw_img_list in batch_raw_img_list:
             images = []
             for raw_image in raw_img_list:
+                raw_image = Image.open(raw_image).convert('RGB') 
                 img = self.vis_processor(raw_image).unsqueeze(1).to(self.device)
                 images.append(img)
             images = torch.cat(images, 1)
