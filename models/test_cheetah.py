@@ -50,8 +50,11 @@ class TestCheetah:
         for i in range(len(context)):
             context[i] += (" " + CONV_VISION.sep + CONV_VISION.roles[1] + ": " + outputs[i] \
                            + " " + CONV_VISION.sep+CONV_VISION.roles[0] + ": " + \
-                           "What is the object in the picture? ")
-
+                           "<ImageHere> What is the object in the picture? ")
+        raw_img_list = []
+        for image in image_list:
+            raw_img_list.append([image, image])
+        
         outputs = self.chat.batch_answer(raw_img_list, context, max_new_tokens=max_new_tokens)
         # outputs = []
         # for image, question in zip(image_list, question_list):
