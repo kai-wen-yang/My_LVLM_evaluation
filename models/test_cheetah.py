@@ -39,7 +39,7 @@ class TestCheetah:
             raw_img_list.append([image])
 
         context = ["<ImageHere> "+ques for ques in question_list]
-        output = self.chat.batch_answer(raw_img_list, context, max_new_tokens=max_new_tokens)
+        outputs = self.chat.batch_answer(raw_img_list, context, max_new_tokens=max_new_tokens)
         # outputs = []
         # for image, question in zip(image_list, question_list):
         #     output = self.chat.answer([image], "<Img><HereForImage></Img> "+question, max_new_tokens=max_new_tokens)
