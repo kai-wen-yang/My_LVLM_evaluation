@@ -31,6 +31,33 @@ class TestCheetah:
         output = self.model.generate({"image": image, "prompt": question}, max_length=max_new_tokens)[0]
 
         return output
+
+    @torch.no_grad()
+    def condition_batch_generate(self, image_list, question_list, max_new_tokens=128):
+        raw_img_list = []
+        for image in image_list:
+            raw_img_list.append([image])
+
+        context = ["<ImageHere> Where and when is this picture taken?" for _ in question_list]
+        outputs = self.chat.batch_answer(raw_img_list, context)
+        pdb.set_trace()
+        for i in len(context):
+            context[i] += (" " + CONV_VISION.sep + CONV_VISION.roles[1] + ": " + outputs[i] \
+                           + " " + CONV_VISION.sep+CONV_VISION.roles[0] + ": " + \
+                           "What is the shape and color of the object in the picture? ")
+        pdb.set_trace()
+        outputs = self.chat.batch_answer(raw_img_list, context)
+        for i in len(context):
+            context[i] += (" " + CONV_VISION.sep + CONV_VISION.roles[1] + ": " + outputs[i] \
+                           + " " + CONV_VISION.sep+CONV_VISION.roles[0] + ": " + \
+                           "What is the object in the picture? ")
+        pdb.set_trace()
+        outputs = self.chat.batch_answer(raw_img_list, context, max_new_tokens=max_new_tokens)
+        # outputs = []
+        # for image, question in zip(image_list, question_list):
+        #     output = self.chat.answer([image], "<Img><HereForImage></Img> "+question, max_new_tokens=max_new_tokens)
+        #     outputs.append(output)
+        return outputs
     
     @torch.no_grad()
     def batch_generate(self, image_list, question_list, max_new_tokens=128):
