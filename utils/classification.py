@@ -24,7 +24,7 @@ def evaluate_zero_shot_image_classification(
     dataloader = DataLoader(dataset, batch_size=batch_size, collate_fn=lambda batch: {key: [dict[key] for dict in batch] for key in batch[0]})
     i = 0
     for batch in tqdm(dataloader, desc="Running inference"):
-        outputs = model.batch_generate(batch['image_path'], [question for _ in range(len(batch['image_path']))], max_new_tokens=max_new_tokens)
+        outputs = model.condition_batch_generate(batch['image_path'], [question for _ in range(len(batch['image_path']))], max_new_tokens=max_new_tokens)
         j = 0
         for image_path, gt_answer, output in zip(batch['image_path'], batch['gt_answers'], outputs):
             if type(image_path) is not str:
