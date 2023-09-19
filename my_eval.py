@@ -23,7 +23,7 @@ imagenet_templates = [
     'a photo of a {}.',
     'a photo of {}.',
 ]
-
+import pdb
 def parse_args():
     parser = argparse.ArgumentParser(description="Demo")
 
@@ -116,6 +116,7 @@ def main(args):
     targets=[]
     for batch in tqdm(dataloader):
         image_path, _, y = batch
+	pdb.set_trace()
         images = get_image(image_path)
         images = [val_preprocess(x) for x in images]
         images = torch.stack(images, dim=0).to(args.device)
