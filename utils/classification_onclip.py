@@ -48,7 +48,7 @@ def evaluate_zero_shot_image_classification_clip(
         _, y_pred = logits_base.topk(k=5, dim=1)
         questions=[]
         for i in range(y_pred.size(0)):
-             options = ' '.join([openai_classnames[ind] for ind in y_pred[i].tolist()])
+             options = ', '.join([openai_classnames[ind] for ind in y_pred[i].tolist()])
 
              questions.append(f"Question: What is the object in the image?\n" \
                        f"Options: {options}\n")
