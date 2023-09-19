@@ -24,6 +24,7 @@ imagenet_templates = [
     'a photo of {}.',
 ]
 import pdb
+import wandb
 def parse_args():
     parser = argparse.ArgumentParser(description="Demo")
 
@@ -102,6 +103,7 @@ def zeroshot_classifier(clip_model, classnames, templates):
 
 
 def main(args):
+    wandb.init()
     os.environ['CUDA_VISIBLE_DEVICES'] = str(args.device)
     clip_model, train_preprocess, val_preprocess = clip.load("ViT-B/16", args.device, jit=False)
     clip_model.eval()
@@ -126,8 +128,8 @@ def main(args):
         image_features /= image_features.norm(dim=-1, keepdim=True)
 
         logits_base = image_features @ zeroshot_weights_base
-        outputs.append(logits_base)
-        targets.append(targets)
+        outputs.append(logits_base.cpu())
+        targets.append(targets.cpu())
     acc=accuracy(torch.cat(outputs,dim=0), torch.cat(targets,dim=0), (1,5))
     print(acc)
 	
