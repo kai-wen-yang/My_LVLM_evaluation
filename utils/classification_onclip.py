@@ -5,6 +5,7 @@ from torch.utils.data import DataLoader
 from typing import Optional
 from collections import defaultdict
 import pdb
+import torch
 from .tools import has_word, remove_special_chars
 import sys 
 sys.path.append("..") 
@@ -49,7 +50,7 @@ def evaluate_zero_shot_image_classification_clip(
         for i in range(y_pred.size(0)):
              options = '\n- '.join([openai_classnames[ind] for ind in y_pred[i].tolist()])
              questions.append(f"Question: What is the object in the image?\nChoose the best answer from the following choices:\n- {options}")
-		
+	pdb.set_trace()	
         ####
         outputs = model.condition_batch_generate(batch['image_path'], questions, max_new_tokens=max_new_tokens)
         j = 0
