@@ -117,7 +117,7 @@ def main(args):
     outputs=[]
     targets=[]
     for batch in tqdm(dataloder):
-	image_path, _, y = batch
+        image_path, _, y = batch
 	image = get_image(image_path)
 
 	images = images.cuda()
