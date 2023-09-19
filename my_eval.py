@@ -118,7 +118,7 @@ def main(args):
         image_path, _, y = batch
         image = get_image(image_path)
         images = images.cuda()
-        target = target.cuda()
+        target = y.cuda()
 
         # predict
         image_features = clip_model.encode_image(images)
