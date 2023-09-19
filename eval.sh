@@ -8,7 +8,10 @@ export PYTHONPATH="$PYTHONPATH:$PWD"
 cd ..
 
 python eval.py --model_name InstructBLIP --batch_size 16 --eval_cls_clip --dataset_name ImageNet --device 0 --sample_num 1000 --max_new_tokens 64 \
---cot 'Answer: Let us think step by step.'
+--cot 'Answer: Let us think step by step.' --cot_position end
+
+python eval.py --model_name InstructBLIP --batch_size 16 --eval_cls_clip --dataset_name ImageNet --device 0 --sample_num 1000 --max_new_tokens 64 \
+--cot 'Let us think step by step.' 
 
 #python eval.py --model_name InstructBLIP --batch_size 1 --eval_cls_clip --dataset_name ImageNet --device 0 --sample_num 1000 --max_new_tokens 64 \
 #--cot 'Sub-question 1: What is the primary color of the object?\nSub-question 2: What is the shape of the object?\n
