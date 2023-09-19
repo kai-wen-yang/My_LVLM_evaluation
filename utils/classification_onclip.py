@@ -55,41 +55,7 @@ def evaluate_zero_shot_image_classification_clip(
              #questions.append(f"What is the object in the image?\nChoose the best answer from the following choices:\n- {options}")#\nChoose the best answer from the following choices:\n- {options}")	
         ####
         outputs = model.batch_generate(batch['image_path'], questions, max_new_tokens=max_new_tokens)
-        pdb.set_trace()
 
-        questions=[]
-        for i in range(y_pred.size(0)):
-             options = ', '.join([openai_classnames[ind] for ind in y_pred[i].tolist()])
-
-             questions.append(
-                       f"Options: {options}\n"\
-                      f"Question: What is the object in the image?")
-             #questions.append(f"What is the object in the image?\nChoose the best answer from the following choices:\n- {options}")#\nChoose the best answer from the following choices:\n- {options}")	
-        ####
-        outputs = model.batch_generate(batch['image_path'], questions, max_new_tokens=max_new_tokens)
-        pdb.set_trace()
-
-        questions=[]
-        for i in range(y_pred.size(0)):
-             options = ', '.join([openai_classnames[ind] for ind in y_pred[i].tolist()])
-
-             questions.append(f"Question: What is the object in the image?\n" \
-                       f"Options: {options}\nAnswer:")
-             #questions.append(f"What is the object in the image?\nChoose the best answer from the following choices:\n- {options}")#\nChoose the best answer from the following choices:\n- {options}")	
-        ####
-        outputs = model.batch_generate(batch['image_path'], questions, max_new_tokens=max_new_tokens)
-        pdb.set_trace()
-
-        questions=[]
-        for i in range(y_pred.size(0)):
-             options = ', '.join([openai_classnames[ind] for ind in y_pred[i].tolist()])
-             questions.append(
-                       f"Options: {options}\n"\
-                      f"What is the object in the image?")
-             #questions.append(f"What is the object in the image?\nChoose the best answer from the following choices:\n- {options}")#\nChoose the best answer from the following choices:\n- {options}")	
-        ####
-        outputs = model.batch_generate(batch['image_path'], questions, max_new_tokens=max_new_tokens)
-        pdb.set_trace()
         j = 0
         for image_path, gt_answer, output in zip(batch['image_path'], batch['gt_answers'], outputs):
             if type(image_path) is not str:
