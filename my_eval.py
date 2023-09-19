@@ -117,12 +117,12 @@ def main(args):
     outputs=[]
     targets=[]
     for batch in tqdm(dataloader):
-        image_path, y = batch['image_path'], batch['label']
-        pdb.set_trace()
+        image_path, target = batch['image_path'], batch['label']
+
         images = [get_image(img) for img in image_path]
         images = [val_preprocess(x) for x in images]
         images = torch.stack(images, dim=0).to(args.device)
-        target = y.cuda()
+        target = torch.LongTensor(target).cuda()
 
         # predict
         image_features = clip_model.encode_image(images)
