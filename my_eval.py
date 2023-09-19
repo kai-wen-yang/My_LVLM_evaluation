@@ -150,9 +150,9 @@ def main(args):
         _, y_pred = logits_base.topk(k=5, dim=1)
         questions=[]
         pdb.set_trace()
-        for i in range(targets.size(0)):
+        for i in range(target.size(0)):
              options = '\n- '.join([openai_classnames[ind] for ind in y_pred[i].tolist()])
-             questions.append("What is the object in the image?\nChoose the best answer from the following choices:\n- {options}")
+             questions.append("Question: What is the object in the image?\nChoose the best answer from the following choices:\n- {options}")
 		
     acc=accuracy(torch.cat(outputs,dim=0), torch.cat(targets,dim=0), (1,5))
     print(acc)
