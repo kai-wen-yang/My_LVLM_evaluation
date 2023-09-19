@@ -51,11 +51,11 @@ def evaluate_zero_shot_image_classification_clip(
         questions=[]
         for i in range(y_pred.size(0)):
              options = ', '.join([openai_classnames[ind] for ind in y_pred[i].tolist()])
-             if not args.cot:
+             if not cot:
                  questions.append(f"Question: What is the object in the image?\n" \
                        f"Options: {options}\n")
              else:
-                 if args.cot_position=='begin':
+                 if cot_position=='begin':
                       questions.append(f"Question: {cot}What is the object in the image?\n" \
                        f"Options: {options}\n")
                  else:
