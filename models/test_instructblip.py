@@ -23,5 +23,4 @@ class TestInstructBLIP:
         imgs = [self.vis_processors["eval"](x) for x in imgs]
         imgs = torch.stack(imgs, dim=0).to(self.device)
         output = self.model.generate({"image": imgs, "prompt": question_list}, max_length=max_new_tokens)
-        pdb.set_trace()
         return output
