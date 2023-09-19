@@ -116,8 +116,9 @@ def main(args):
     targets=[]
     for batch in tqdm(dataloder):
         image_path, _, y = batch
-        image = get_image(image_path)
-        images = images.cuda()
+        images = get_image(image_path)
+        images = [val_preprocess(x) for x in images]
+        images = torch.stack(images, dim=0).to(args.device)
         target = y.cuda()
 
         # predict
