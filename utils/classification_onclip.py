@@ -24,6 +24,7 @@ def evaluate_zero_shot_image_classification_clip(
     question='What is the object in the image?',
     max_new_tokens=16,
     per_class_acc=True,
+    cot=None,
 ):
     ## load clip model
     clip_model, train_preprocess, val_preprocess = clip.load("ViT-B/16", 'cuda', jit=False)
@@ -50,7 +51,7 @@ def evaluate_zero_shot_image_classification_clip(
         for i in range(y_pred.size(0)):
              options = ', '.join([openai_classnames[ind] for ind in y_pred[i].tolist()])
 
-             questions.append(f"Question: What is the object in the image?\n" \
+             questions.append(f"Question: {cot}What is the object in the image?\n" \
                        f"Options: {options}\n")
              #questions.append(f"What is the object in the image?\nChoose the best answer from the following choices:\n- {options}")#\nChoose the best answer from the following choices:\n- {options}")	
         ####
