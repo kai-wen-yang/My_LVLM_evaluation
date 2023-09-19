@@ -48,8 +48,11 @@ def evaluate_zero_shot_image_classification_clip(
         _, y_pred = logits_base.topk(k=5, dim=1)
         questions=[]
         for i in range(y_pred.size(0)):
-             options = '\n- '.join([openai_classnames[ind] for ind in y_pred[i].tolist()])
-             questions.append(f"What is the object in the image?\nChoose the best answer from the following choices:\n- {options}")#\nChoose the best answer from the following choices:\n- {options}")	
+             options = ' '.join([openai_classnames[ind] for ind in y_pred[i].tolist()])
+
+             questions.append(f"Question: What is the object in the image?\n" \
+                       f"Options: {options}\n")
+             #questions.append(f"What is the object in the image?\nChoose the best answer from the following choices:\n- {options}")#\nChoose the best answer from the following choices:\n- {options}")	
         ####
         pdb.set_trace()
         outputs = model.batch_generate(batch['image_path'], questions, max_new_tokens=max_new_tokens)
