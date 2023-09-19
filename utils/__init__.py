@@ -5,3 +5,4 @@ from .kie import evaluate_KIE
 from .mrr import evaluate_MRR
 from .embodied import evaluate_embodied
 from .classification import evaluate_zero_shot_image_classification
+from .classification import evaluate_zero_shot_image_classification_clip
