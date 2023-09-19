@@ -118,20 +118,19 @@ def main(args):
     targets=[]
     for batch in tqdm(dataloder):
         image_path, _, y = batch
-	image = get_image(image_path)
+        image = get_image(image_path)
+        images = images.cuda()
+        target = target.cuda()
 
-	images = images.cuda()
-	target = target.cuda()
+        # predict
+        image_features = clip_model.encode_image(images)
+        image_features /= image_features.norm(dim=-1, keepdim=True)
 
-	# predict
-	image_features = clip_model.encode_image(images)
-	image_features /= image_features.norm(dim=-1, keepdim=True)
-
-	logits_base = image_features @ zeroshot_weights_base
-	outputs.append(logits_base)
-	targets.append(targets)
-     acc=accuracy(torch.cat(outputs,dim=0), torch.cat(targets,dim=0))
-     print(acc)
+        logits_base = image_features @ zeroshot_weights_base
+        outputs.append(logits_base)
+        targets.append(targets)
+    acc=accuracy(torch.cat(outputs,dim=0), torch.cat(targets,dim=0))
+    print(acc)
 	
 	    
 
