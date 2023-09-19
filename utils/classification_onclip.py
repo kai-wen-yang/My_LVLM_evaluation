@@ -9,6 +9,7 @@ from .tools import has_word, remove_special_chars
 import sys 
 sys.path.append("..") 
 from my_eval import clip, zeroshot_classifier, openai_classnames, imagenet_templates
+from model import get_image
 
 
 def evaluate_zero_shot_image_classification_clip(
