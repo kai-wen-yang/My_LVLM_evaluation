@@ -86,7 +86,7 @@ def get_eval_function(args):
     if args.question is not None:
         eval_func = partial(eval_func, question=args.question)
     if args.cot is not None:
-        eval_func = partial(eval_func, cot=args.cot)
+        eval_func = partial(eval_func, cot=args.cot, cot_position=args.cot_position)
     
     return eval_func
 
