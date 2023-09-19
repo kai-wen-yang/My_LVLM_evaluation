@@ -10,7 +10,7 @@ import numpy as np
 
 from utils import evaluate_OCR, evaluate_VQA, evaluate_Caption, evaluate_KIE, evaluate_MRR, evaluate_embodied, evaluate_zero_shot_image_classification
 from task_datasets import ocrDataset, dataset_class_dict
-from models import get_model
+from models import get_model, get_image
 torch.hub.set_dir('/fs/nexus-scratch/kwyang3/models')
 import pdb
 
@@ -23,7 +23,6 @@ imagenet_templates = [
     'a photo of a {}.',
     'a photo of {}.',
 ]
-from model import get_image
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Demo")
