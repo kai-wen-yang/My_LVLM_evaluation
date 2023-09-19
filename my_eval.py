@@ -109,7 +109,7 @@ def main(args):
 
     dataset = dataset_class_dict[args.dataset_name]()
     dataset = sample_dataset(dataset, args.sample_num, args.sample_seed)
-    dataloader = DataLoader(dataset, batch_size=batch_size, collate_fn=lambda batch: {key: [dict[key] for dict in batch] for key in batch[0]})
+    dataloader = DataLoader(dataset, batch_size=args.batch_size, collate_fn=lambda batch: {key: [dict[key] for dict in batch] for key in batch[0]})
     zeroshot_weights_base = zeroshot_classifier(openai_classnames, imagenet_templates)
     	 
     outputs=[]
