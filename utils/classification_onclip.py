@@ -63,7 +63,7 @@ def evaluate_zero_shot_image_classification_clip(
                        f"Options: {options}\n{cot}")
              #questions.append(f"What is the object in the image?\nChoose the best answer from the following choices:\n- {options}")#\nChoose the best answer from the following choices:\n- {options}")	
         ####
-        pdb.set_trace()
+
         outputs = model.batch_generate(batch['image_path'], questions, max_new_tokens=max_new_tokens)
 
         j = 0
