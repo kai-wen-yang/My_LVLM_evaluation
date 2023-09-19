@@ -44,6 +44,7 @@ def parse_args():
     
     parser.add_argument("--eval_cls_clip", action="store_true", default=False, help="Whether to evaluate on zero-shot classification.")
     parser.add_argument("--cot", type=str, default=None)
+    parser.add_argument("--cot_position", type=str, default='begin')
     args = parser.parse_args()
     return args
 
