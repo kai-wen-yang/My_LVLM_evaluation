@@ -49,7 +49,7 @@ def evaluate_zero_shot_image_classification_clip(
         questions=[]
         for i in range(y_pred.size(0)):
              options = '\n- '.join([openai_classnames[ind] for ind in y_pred[i].tolist()])
-             questions.append(f"What is the object in the image?")#\nChoose the best answer from the following choices:\n- {options}")	
+             questions.append(f"What is the object in the image?\nChoose the best answer from the following choices:\n- {options}")#\nChoose the best answer from the following choices:\n- {options}")	
         ####
         outputs = model.batch_generate(batch['image_path'], questions, max_new_tokens=max_new_tokens)
         j = 0
