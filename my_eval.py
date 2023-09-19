@@ -116,6 +116,7 @@ def main(args):
     	 
     outputs=[]
     targets=[]
+    
     for batch in tqdm(dataloader):
         image_path, target = batch['image_path'], batch['label']
 
@@ -125,8 +126,9 @@ def main(args):
         target = torch.LongTensor(target).cuda()
 
         # predict
-        image_features = clip_model.encode_image(images)
-        image_features /= image_features.norm(dim=-1, keepdim=True)
+        with torch.no_grad():
+             image_features = clip_model.encode_image(images)
+             image_features /= image_features.norm(dim=-1, keepdim=True)
 
         logits_base = image_features @ zeroshot_weights_base
         outputs.append(logits_base.cpu())
