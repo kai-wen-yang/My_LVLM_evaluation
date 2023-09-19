@@ -103,8 +103,7 @@ def zeroshot_classifier(classnames, templates):
 
 def main(args):
     os.environ['CUDA_VISIBLE_DEVICES'] = str(args.device)
-    clip_model, train_preprocess, val_preprocess = clip.load(
-      "ViT-B/16")
+    clip_model, train_preprocess, val_preprocess = clip.load("ViT-B/16", args.device, jit=False)
     clip_model.eval()
     clip_model.cuda()
 
