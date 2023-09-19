@@ -84,7 +84,7 @@ def sample_dataset(dataset, max_sample_num=5000, seed=0):
     return dataset
 
 
-def zeroshot_classifier(classnames, templates):
+def zeroshot_classifier(clip_model, classnames, templates):
 	with torch.no_grad():
 		zeroshot_weights = []
 		i = 0
@@ -110,7 +110,7 @@ def main(args):
     dataset = dataset_class_dict[args.dataset_name]()
     dataset = sample_dataset(dataset, args.sample_num, args.sample_seed)
     dataloader = DataLoader(dataset, batch_size=args.batch_size, collate_fn=lambda batch: {key: [dict[key] for dict in batch] for key in batch[0]})
-    zeroshot_weights_base = zeroshot_classifier(openai_classnames, imagenet_templates)
+    zeroshot_weights_base = zeroshot_classifier(clip_model, openai_classnames, imagenet_templates)
     	 
     outputs=[]
     targets=[]
@@ -127,7 +127,7 @@ def main(args):
         logits_base = image_features @ zeroshot_weights_base
         outputs.append(logits_base)
         targets.append(targets)
-    acc=accuracy(torch.cat(outputs,dim=0), torch.cat(targets,dim=0))
+    acc=accuracy(torch.cat(outputs,dim=0), torch.cat(targets,dim=0), (1,5)
     print(acc)
 	
 	    
