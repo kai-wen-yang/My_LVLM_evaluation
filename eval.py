@@ -41,7 +41,9 @@ def parse_args():
     parser.add_argument("--eval_mrr", action="store_true", default=False, help="Whether to evaluate on mrr.")
     parser.add_argument("--eval_embod", action="store_true", default=False, help="Whether to evaluate on embodied.")
     parser.add_argument("--eval_cls", action="store_true", default=False, help="Whether to evaluate on zero-shot classification.")
+    
     parser.add_argument("--eval_cls_clip", action="store_true", default=False, help="Whether to evaluate on zero-shot classification.")
+    parser.add_argument("--cot", type=str, default=None)
     args = parser.parse_args()
     return args
 
@@ -82,6 +84,8 @@ def get_eval_function(args):
     
     if args.question is not None:
         eval_func = partial(eval_func, question=args.question)
+    if args.cot is not None:
+        eval_func = partial(eval_func, cot=args.cot)
     
     return eval_func
 
