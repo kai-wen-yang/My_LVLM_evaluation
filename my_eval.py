@@ -130,7 +130,7 @@ def main(args):
 
         logits_base = image_features @ zeroshot_weights_base
         outputs.append(logits_base.cpu())
-        targets.append(targets.cpu())
+        targets.append(target.cpu())
     acc=accuracy(torch.cat(outputs,dim=0), torch.cat(targets,dim=0), (1,5))
     print(acc)
 	
