@@ -8,7 +8,7 @@ export PYTHONPATH="$PYTHONPATH:$PWD"
 cd ..
 
 python eval.py --model_name InstructBLIP --batch_size 16 --eval_cls_clip --dataset_name ImageNet --device 0 --sample_num 1000 --max_new_tokens 64 \
---cot 'Let's think step by step'
+--cot 'Let us think step by step. '
 
 #python eval.py --model_name Cheetah --batch_size 8 --eval_cls --dataset_name ImageNet --device 0 --sample_num 1000
 #python eval.py --model_name InstructBLIP --batch_size 16 --eval_cls --dataset_name ImageNet --device 0 --sample_num 1000
