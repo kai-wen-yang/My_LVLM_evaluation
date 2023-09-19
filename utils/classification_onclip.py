@@ -67,7 +67,7 @@ def evaluate_zero_shot_image_classification_clip(
             predictions.append(answer_dict)
             j += 1
         i += 1
-    answer_dir = os.path.join(answer_path, time)
+    answer_dir = os.path.join(answer_path, 'on_clip', time)
     os.makedirs(answer_dir, exist_ok=True)
     answer_path = os.path.join(answer_dir, f"{dataset_name}.json")
     with open(answer_path, "w") as f:
