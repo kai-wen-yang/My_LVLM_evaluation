@@ -24,7 +24,7 @@ def evaluate_zero_shot_image_classification_clip(
     per_class_acc=True,
 ):
     ## load clip model
-    clip_model, train_preprocess, val_preprocess = clip.load("ViT-B/16", args.device, jit=False)
+    clip_model, train_preprocess, val_preprocess = clip.load("ViT-B/16", 'cuda', jit=False)
     clip_model.eval()
     clip_model.cuda()
     zeroshot_weights_base = zeroshot_classifier(clip_model, openai_classnames, imagenet_templates)
