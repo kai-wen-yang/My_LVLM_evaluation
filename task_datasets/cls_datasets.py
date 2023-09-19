@@ -187,6 +187,7 @@ class ImageNetDataset(ImageNet):
         return {
             "image_path": path,
             "gt_answers": answers,
+            "label": target
         }
 
 
