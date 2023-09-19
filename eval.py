@@ -7,7 +7,7 @@ from functools import partial
 import torch
 import numpy as np
 
-from utils import evaluate_OCR, evaluate_VQA, evaluate_Caption, evaluate_KIE, evaluate_MRR, evaluate_embodied, evaluate_zero_shot_image_classification
+from utils import evaluate_OCR, evaluate_VQA, evaluate_Caption, evaluate_KIE, evaluate_MRR, evaluate_embodied, evaluate_zero_shot_image_classification, evaluate_zero_shot_image_classification_clip
 from task_datasets import ocrDataset, dataset_class_dict
 from models import get_model
 torch.hub.set_dir('/fs/nexus-scratch/kwyang3/models')
@@ -41,7 +41,7 @@ def parse_args():
     parser.add_argument("--eval_mrr", action="store_true", default=False, help="Whether to evaluate on mrr.")
     parser.add_argument("--eval_embod", action="store_true", default=False, help="Whether to evaluate on embodied.")
     parser.add_argument("--eval_cls", action="store_true", default=False, help="Whether to evaluate on zero-shot classification.")
-
+    parser.add_argument("--eval_cls_clip", action="store_true", default=False, help="Whether to evaluate on zero-shot classification.")
     args = parser.parse_args()
     return args
 
@@ -72,6 +72,8 @@ def get_eval_function(args):
         eval_func = evaluate_embodied
     elif args.eval_cls:
         eval_func = evaluate_zero_shot_image_classification
+    elif args.eval_cls_clip:
+        eval_func = evaluate_zero_shot_image_classification_clip
     else:
         raise NotImplementedError("Invalid choice of evaluation function")
 
