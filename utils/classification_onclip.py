@@ -57,7 +57,7 @@ def evaluate_zero_shot_image_classification_clip(
         outputs = model.batch_generate(batch['image_path'], questions, max_new_tokens=max_new_tokens)
 
         j = 0
-        for image_path, gt_answer, output in zip(batch['image_path'], batch['gt_answers'], outputs):
+        for image_path, gt_answer, output, question in zip(batch['image_path'], batch['gt_answers'], outputs, questions):
             if type(image_path) is not str:
                 image_path = f'batch#{i} sample#{j}'
             answer_dict={'question': question, 'answer': output,
