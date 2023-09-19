@@ -90,7 +90,7 @@ def zeroshot_classifier(clip_model, classnames, templates):
 		i = 0
 		for classname in tqdm(classnames):
 			texts = [template.format(classname) for template in templates] #format with class
-			texts = clip_model.tokenize(texts).cuda() #tokenize
+			texts = clip.tokenize(texts).cuda() #tokenize
 			class_embeddings = clip_model.encode_text(texts) #embed with text encoder
 			class_embeddings /= class_embeddings.norm(dim=-1, keepdim=True)
 			class_embedding = class_embeddings.mean(dim=0)
