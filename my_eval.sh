@@ -7,4 +7,4 @@ export PYTHONPATH="$PYTHONPATH:$PWD"
 
 cd ..
 
-python my_eval.py --model_name Cheetah --batch_size 8 --eval_cls --dataset_name ImageNet --device 0 --sample_num 1000
+python my_eval.py --model_name Cheetah --batch_size 64 --eval_cls --dataset_name ImageNet --device 0 --sample_num 1000
