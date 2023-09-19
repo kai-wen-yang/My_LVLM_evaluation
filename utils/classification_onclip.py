@@ -9,7 +9,7 @@ from .tools import has_word, remove_special_chars
 from ..my_eval import clip, zeroshot_classifier, openai_classnames, imagenet_templates
 
 
-def evaluate_zero_shot_image_classification(
+def evaluate_zero_shot_image_classification_clip(
     model,
     dataset,
     model_name,
