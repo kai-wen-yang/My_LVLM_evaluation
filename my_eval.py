@@ -114,7 +114,7 @@ def main(args):
     	 
     outputs=[]
     targets=[]
-    for batch in tqdm(dataloder):
+    for batch in tqdm(dataloader):
         image_path, _, y = batch
         images = get_image(image_path)
         images = [val_preprocess(x) for x in images]
