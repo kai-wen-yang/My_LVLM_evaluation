@@ -140,7 +140,7 @@ def evaluate_zero_shot_image_classification_detect(
                     clip_unmatch_llm_match+=1
             if (dict[i]['confidence']>0.25 and dict[i]['clip_prediction'] == classnames[dict[i]['label']]) or (dict[i]['confidence']<=0.25 and any([has_word(answer, x) for x in gt_answers])):
                 high_clip_low_llm +=1
-            if (dict[i]['yesorno'] == 'yes' and dict[i]['clip_prediction'] == classnames[dict[i]['label']]) or (dict[i]['yesorno'] != 'yes': and any([has_word(answer, x) for x in gt_answers])):
+            if (dict[i]['yesorno'] == 'yes' and dict[i]['clip_prediction'] == classnames[dict[i]['label']]) or (dict[i]['yesorno'] != 'yes' and any([has_word(answer, x) for x in gt_answers])):
                 yes_clip_no_llm +=1
 
             num+=1
