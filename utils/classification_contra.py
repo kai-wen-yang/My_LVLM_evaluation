@@ -56,7 +56,7 @@ def evaluate_zero_shot_image_classification_contra(
             if type(image_path) is not str:
                 image_path = f'batch#{i} sample#{j}'
             answer_dict={'question': question, 'answer': output,
-            'gt_answers': gt_answer, 'image_path': image_path, 'confidence':conf,
+            'gt_answers': gt_answer, 'image_path': image_path, 'confidence':conf, 'options': option,
             'model_name': model_name, 'clip_prediction': option[0], 'label':label}
 
             predictions.append(answer_dict)
