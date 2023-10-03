@@ -94,7 +94,7 @@ class TestCheetah:
             return_tensors="pt"
         ).to(self.device)
 
-        with self.maybe_autocast():
+        with self.model.maybe_autocast():
             inputs_embeds = self.model.llm_model.get_input_embeddings()(llm_tokens.input_ids)
             attention_mask = llm_tokens.attention_mask
 
