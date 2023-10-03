@@ -82,7 +82,7 @@ def evaluate_zero_shot_image_classification_detect(
     clip_match_conf = 0
     clip_unmatch_conf = 0
     high_clip_low_llm = 0
-
+    yes_clip_no_llm = 0
     yes_correct, no_correct, yes, no = 0, 0, 0, 0
     high_correct, low_correct, high, low = 0, 0, 0, 0
 
@@ -113,7 +113,7 @@ def evaluate_zero_shot_image_classification_detect(
                 else:
                      no+=1
                      no_correct+=1         
-                if dict[i]['confidence']>0.23:
+                if dict[i]['confidence']>0.25:
                      high+=1
                      high_correct+=1
                 else:
@@ -131,7 +131,7 @@ def evaluate_zero_shot_image_classification_detect(
                 else:
                      no+=1            
 
-                if dict[i]['confidence']>0.23:
+                if dict[i]['confidence']>0.25:
                      high+=1
                 else:
                      low+=1
@@ -140,6 +140,8 @@ def evaluate_zero_shot_image_classification_detect(
                     clip_unmatch_llm_match+=1
             if (dict[i]['confidence']>0.25 and dict[i]['clip_prediction'] == classnames[dict[i]['label']]) or (dict[i]['confidence']<=0.25 and any([has_word(answer, x) for x in gt_answers])):
                 high_clip_low_llm +=1
+            if (dict[i]['yesorno'] == 'yes' and dict[i]['clip_prediction'] == classnames[dict[i]['label']]) or (dict[i]['yesorno'] != 'yes': and any([has_word(answer, x) for x in gt_answers])):
+                yes_clip_no_llm +=1
 
             num+=1
     acc_has_word = correct / num * 100
@@ -147,7 +149,6 @@ def evaluate_zero_shot_image_classification_detect(
     print(f'{dataset_name} of has_word: {acc_has_word:.2f}%')
     print(f'{dataset_name} of exact match: {acc_exact_match:.2f}%')
     print(f'{dataset_name} of clip match: {clip_match / num * 100:.2f}%')
-    print(f'{dataset_name} of high clip low llm: {high_clip_low_llm / num * 100:.2f}%')
     print(f'{dataset_name} of clip unmatch: {clip_unmatch / num * 100:.2f}%')
     print(f'{dataset_name} of clip unmatch llm match: {clip_unmatch_llm_match / clip_unmatch * 100:.2f}%')
     print(f'{dataset_name} of clip match confidence: {clip_match_conf / clip_match:.2f}%')
@@ -157,12 +158,13 @@ def evaluate_zero_shot_image_classification_detect(
     print(f'{dataset_name} of yes_correct: {yes_correct/yes:.2f}%')
     print(f'{dataset_name} of nos: {no:.2f}')
     print(f'{dataset_name} of no_correct: {no_correct/no:.2f}%')
-
+    print(f'{dataset_name} of yes clip no llm: {yes_clip_no_llm / num * 100:.2f}%')
     print('###########################')
     print(f'{dataset_name} of highs: {high:.2f}')
     print(f'{dataset_name} of high_correct: {high_correct/high:.2f}%')
     print(f'{dataset_name} of lows: {low:.2f}')
     print(f'{dataset_name} of low_correct: {low_correct/low:.2f}%')
+    print(f'{dataset_name} of high clip low llm: {high_clip_low_llm / num * 100:.2f}%')
     print('###########################')
     
     metrics = {
