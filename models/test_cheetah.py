@@ -95,7 +95,7 @@ class TestCheetah:
         ).to(self.device)
 
         with self.model.maybe_autocast():
-            inputs_embeds = self.model.llm_model.get_input_embeddings()(llm_tokens.input_ids)
+            inputs_embeds = self.model.llama_model.get_input_embeddings()(llm_tokens.input_ids)
             attention_mask = llm_tokens.attention_mask
 
             outputs = self.model.llama_model.generate(
