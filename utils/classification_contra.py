@@ -49,7 +49,7 @@ def evaluate_zero_shot_image_classification_contra(
         for i in range(len(batch['image_path'])):
             options_a = batch['options'][i][0]
             options_b = batch['options'][i][1]
-            questions_all.append(rationale[i]+f' Based on these information, what is the object in the image? {options_a} or a {options_b}?\nAnswer:')
+            questions_all.append(rationale[i]+f' Based on these information, is the object in the image a {options_a} or a {options_b}?\nAnswer:')
 
         outputs = model.batch_generate(batch['image_path'], questions_all, max_new_tokens=max_new_tokens)
 
@@ -57,6 +57,7 @@ def evaluate_zero_shot_image_classification_contra(
         for image_path, gt_answer, output, question, option, label, conf in zip(batch['image_path'], batch['gt_answers'],outputs, questions_all, batch['options'], batch['label'], batch['confidence']):
             if type(image_path) is not str:
                 image_path = f'batch#{i} sample#{j}'
+            output = output.split(',')[0]
             answer_dict={'question': question, 'answer': output,
             'gt_answers': gt_answer, 'image_path': image_path, 'confidence':conf, 'options': option,
             'model_name': model_name, 'clip_prediction': option[0], 'label':label}
