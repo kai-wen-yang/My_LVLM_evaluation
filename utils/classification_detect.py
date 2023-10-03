@@ -105,11 +105,24 @@ def evaluate_zero_shot_image_classification_detect(
             if any([answer == x for x in gt_answers]):
                 exact_match += 1
             if dict[i]['clip_prediction'] == classnames[dict[i]['label']]:
+                if dict[i]['yesorno'] == 'yes':
+                     yes+=1
+                     yes_correct+=1
+                else:
+                     no+=1
+                     no_correct+=1                 
+
                 clip_match += 1
                 clip_match_conf += dict[i]['confidence']
             else:
                 clip_unmatch += 1
                 clip_unmatch_conf += dict[i]['confidence']
+
+                if dict[i]['yesorno'] == 'yes':
+                     yes+=1
+                else:
+                     no+=1            
+
                 if any([has_word(answer, x) for x in gt_answers]):
                     clip_unmatch_llm_match+=1
             if (dict[i]['confidence']>0.25 and dict[i]['clip_prediction'] == classnames[dict[i]['label']]) or (dict[i]['confidence']<=0.25 and any([has_word(answer, x) for x in gt_answers])):
