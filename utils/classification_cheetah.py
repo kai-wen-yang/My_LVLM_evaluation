@@ -17,7 +17,7 @@ vicuna_prompt =\
     'A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user\'s questions.\\nUSER: {}\nASSISTANT:'
 
 
-def evaluate_zero_shot_image_classification_contra(
+def evaluate_zero_shot_image_classification_cheetah(
     model,
     dataset,
     model_name,
@@ -42,12 +42,12 @@ def evaluate_zero_shot_image_classification_contra(
         for i in range(len(batch['image_path'])):
             options_a = batch['options'][i][0]
             options_b = batch['options'][i][1]
-            questions.append(vicuna_prompt.format(f'What is the difference between {options_a} and {options_b}? Answer it briefly.'))
+            questions.append(vicuna_prompt.format(f'what is the key difference between indigo {options_a} and {options_b}? Answer in short.'))
 
         rationale = model.text_generate(questions, max_new_tokens=128)
         questions_all = []
         for i in range(len(batch['image_path'])):
-            questions_all.append(rationale[i]+f' Based on these information, what is the object in the image? {options_a} or a {options_b}?\nAnswer:')
+            questions_all.append(rationale[i]+f' <Img><HereForImage></Img>, what is the object in the image? {options_a} or {options_b}?\nAnswer:')
 
         outputs = model.batch_generate(batch['image_path'], questions_all, max_new_tokens=max_new_tokens)
 
