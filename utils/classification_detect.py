@@ -31,7 +31,7 @@ def evaluate_zero_shot_image_classification_detect(
     predictions=[]
     dataloader = DataLoader(dataset, batch_size=batch_size, collate_fn=lambda batch: {key: [dict[key] for dict in batch] for key in batch[0]})
     i = 0
-    detect = '''Is the object in this picture is a {}?'''
+    detect = '''Is the object in this picture is a {}? Answer yes or no.'''
     for t, batch in enumerate(tqdm(dataloader, desc="Running inference")):
 
         detecter=[]
