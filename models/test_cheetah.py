@@ -93,7 +93,7 @@ class TestCheetah:
             padding="longest",
             return_tensors="pt"
         ).to(self.device)
-
+        pdb.set_trace()
         with self.model.maybe_autocast():
             inputs_embeds = self.model.llama_model.get_input_embeddings()(llm_tokens.input_ids)
             attention_mask = llm_tokens.attention_mask
