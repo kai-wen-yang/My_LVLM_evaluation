@@ -115,7 +115,8 @@ def evaluate_zero_shot_image_classification_detect(
             if (dict[i]['confidence']>0.25 and dict[i]['clip_prediction'] == classnames[dict[i]['label']]) or (dict[i]['confidence']<=0.25 and any([has_word(answer, x) for x in gt_answers])):
                 high_clip_low_llm +=1
 
-            if dict[i]['yesorno'] == 'yes'
+            if dict[i]['yesorno'] == 'yes':
+                yes+=1
 
             num+=1
     acc_has_word = correct / num * 100
