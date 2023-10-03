@@ -16,16 +16,15 @@ cd ..
 
 
 python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name ImageNetOption --device 0 --max_new_tokens 64 \
---expname prompt1 --sample_num 1000 --task_name classification_detect \
---cot '''Is the object in the image a {}? Answer yes or no, followed by a score in 0~1 measuring the confidence of your answer.'''
+--expname prompt1 --sample_num 100 --task_name classification_contra
 
-python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name ImageNetOption --device 0 --max_new_tokens 64 \
---expname prompt2 --sample_num 1000 --task_name classification_detect \
---cot '''How likely is it that the object in the picture is a {}? Answer a probability between 0 and 1.'''
+# python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name ImageNetOption --device 0 --max_new_tokens 64 \
+# --expname prompt2 --sample_num 1000 --task_name classification_detect \
+# --cot '''How likely is it that the object in the picture is a {}? Answer a probability between 0 and 1.'''
 
-python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name ImageNetOption --device 0 --max_new_tokens 64 \
---expname prompt3 --sample_num 1000 --task_name classification_detect \
---cot '''Do you think the object in the picture is a {}? Give a probability between 0 and 1.'''
+# python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name ImageNetOption --device 0 --max_new_tokens 64 \
+# --expname prompt3 --sample_num 1000 --task_name classification_detect \
+# --cot '''Do you think the object in the picture is a {}? Give a probability between 0 and 1.'''
 
 
 #python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name ImageNetOption --device 0 --max_new_tokens 64 \
