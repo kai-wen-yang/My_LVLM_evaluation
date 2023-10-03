@@ -86,9 +86,9 @@ class TestCheetah:
          num_captions=1,
          temperature=1,
         ):
-        self.model.llm_tokenizer.padding_side = "right"
+        self.model.llama_tokenizer.padding_side = "right"
 
-        llm_tokens = self.model.llm_tokenizer(
+        llm_tokens = self.model.llama_tokenizer(
             question_list,
             padding="longest",
             return_tensors="pt"
@@ -98,7 +98,7 @@ class TestCheetah:
             inputs_embeds = self.model.llm_model.get_input_embeddings()(llm_tokens.input_ids)
             attention_mask = llm_tokens.attention_mask
 
-            outputs = self.model.llm_model.generate(
+            outputs = self.model.llama_model.generate(
                 inputs_embeds=inputs_embeds,
                 attention_mask=attention_mask,
                 do_sample=use_nucleus_sampling,
@@ -114,7 +114,7 @@ class TestCheetah:
             )
 
         outputs[outputs == 0] = 2 # convert output id 0 to 2 (eos_token_id)
-        output_text = self.llm_tokenizer.batch_decode(outputs, skip_special_tokens=True)
+        output_text = self.llama_tokenizer.batch_decode(outputs, skip_special_tokens=True)
         output_text = [text.strip() for text in output_text]
 
         return output_text
