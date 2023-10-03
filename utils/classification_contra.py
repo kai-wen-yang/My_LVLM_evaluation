@@ -117,10 +117,11 @@ def evaluate_zero_shot_image_classification_contra(
             if (dict[i]['confidence']>0.25 and dict[i]['clip_prediction'] == classnames[dict[i]['label']]) or (dict[i]['confidence']<=0.25 and any([has_word(answer, x) for x in gt_answers])):
                 high_clip_low_llm +=1
             else:
+                pdb.set_trace()
                 batch = dict[i]
                 text_table = wandb.Table(columns=["answer", "label", "option", "confidence", "question"])
                 text_table.add_data(batch['answer'], gt_answers, ', '.join(batch['options'][:args.top_option]), str(batch['confidence']), batch['question'])
-                wandb.log({f'time{time}_batch{str(t)}/image.jpg': wandb.Image(get_image(batch['image_path'])),
+                wandb.log({f'time{time}_batch{str(i)}/image.jpg': wandb.Image(get_image(batch['image_path'])),
                    f'time{time}_batch{str(i)}/table': text_table,
                    })
 
