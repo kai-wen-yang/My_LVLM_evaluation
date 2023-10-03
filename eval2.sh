@@ -16,7 +16,7 @@ cd ..
 
 
 python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name ImageNetOption --device 0 --max_new_tokens 64 \
---expname prompt1 --sample_num 100 --task_name classification_contra
+--expname prompt1 --sample_num 10 --task_name classification_contra
 
 # python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name ImageNetOption --device 0 --max_new_tokens 64 \
 # --expname prompt2 --sample_num 1000 --task_name classification_detect \
