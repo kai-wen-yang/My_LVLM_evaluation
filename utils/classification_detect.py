@@ -113,7 +113,7 @@ def evaluate_zero_shot_image_classification_detect(
                 else:
                      no+=1
                      no_correct+=1         
-                if dict[i]['confidence']>0.25:
+                if dict[i]['confidence']>0.23:
                      high+=1
                      high_correct+=1
                 else:
@@ -131,7 +131,7 @@ def evaluate_zero_shot_image_classification_detect(
                 else:
                      no+=1            
 
-                if dict[i]['confidence']>0.25:
+                if dict[i]['confidence']>0.23:
                      high+=1
                 else:
                      low+=1
