@@ -31,13 +31,13 @@ def evaluate_zero_shot_image_classification_detect(
     predictions=[]
     dataloader = DataLoader(dataset, batch_size=batch_size, collate_fn=lambda batch: {key: [dict[key] for dict in batch] for key in batch[0]})
     i = 0
-    detect = '''Is the object in this picture is a {}? Answer yes or no.'''
+    detect = '''Is the object in this picture is a {}?'''
     for t, batch in enumerate(tqdm(dataloader, desc="Running inference")):
 
         detecter=[]
         for i in range(len(batch['image_path'])):
              detecter.append(detect.format(batch['options'][i][0]))
-        yesornos = model.batch_generate(batch['image_path'], detect, max_new_tokens=max_new_tokens)
+        yesornos = model.batch_generate(batch['image_path'], detecter, max_new_tokens=max_new_tokens)
         pdb.set_trace()
         questions=[]
         for i in range(len(batch['image_path'])):
