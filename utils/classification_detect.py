@@ -84,6 +84,7 @@ def evaluate_zero_shot_image_classification_detect(
     high_clip_low_llm = 0
 
     yes_correct, no_correct, yes, no = 0, 0, 0, 0
+    high_correct, low_correct, high, low = 0, 0, 0, 0
 
     per_class_dict = defaultdict(lambda : defaultdict(int))
     with open(answer_path, 'r') as f:
@@ -111,7 +112,13 @@ def evaluate_zero_shot_image_classification_detect(
                      yes_correct+=1
                 else:
                      no+=1
-                     no_correct+=1                 
+                     no_correct+=1         
+                if dict[i]['confidence']>0.25:
+                     high+=1
+                     high_correct+=1
+                else:
+                     low+=1
+                     low_correct+=1    
 
                 clip_match += 1
                 clip_match_conf += dict[i]['confidence']
@@ -124,6 +131,11 @@ def evaluate_zero_shot_image_classification_detect(
                 else:
                      no+=1            
 
+                if dict[i]['confidence']>0.25:
+                     high+=1
+                else:
+                     low+=1
+                
                 if any([has_word(answer, x) for x in gt_answers]):
                     clip_unmatch_llm_match+=1
             if (dict[i]['confidence']>0.25 and dict[i]['clip_prediction'] == classnames[dict[i]['label']]) or (dict[i]['confidence']<=0.25 and any([has_word(answer, x) for x in gt_answers])):
@@ -141,10 +153,17 @@ def evaluate_zero_shot_image_classification_detect(
     print(f'{dataset_name} of clip match confidence: {clip_match_conf / clip_match:.2f}%')
     print(f'{dataset_name} of clip unmatch confidence: {clip_unmatch_conf / clip_unmatch:.2f}%')
     print('###########################')
-    print(f'{dataset_name} of yess: {yes:.2f}%')
+    print(f'{dataset_name} of yess: {yes:.2f}')
     print(f'{dataset_name} of yes_correct: {yes_correct/yes:.2f}%')
-    print(f'{dataset_name} of nos: {no:.2f}%')
+    print(f'{dataset_name} of nos: {no:.2f}')
     print(f'{dataset_name} of no_correct: {no_correct/no:.2f}%')
+
+    print('###########################')
+    print(f'{dataset_name} of highs: {high:.2f}')
+    print(f'{dataset_name} of high_correct: {high_correct/high:.2f}%')
+    print(f'{dataset_name} of lows: {low:.2f}')
+    print(f'{dataset_name} of low_correct: {low_correct/low:.2f}%')
+    print('###########################')
     
     metrics = {
         'has_word': acc_has_word,
