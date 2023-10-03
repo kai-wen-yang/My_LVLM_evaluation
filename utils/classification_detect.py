@@ -38,7 +38,7 @@ def evaluate_zero_shot_image_classification_detect(
         for i in range(len(batch['image_path'])):
              detecter.append(detect.format(batch['options'][i][0]))
         yesornos = model.batch_generate(batch['image_path'], detecter, max_new_tokens=max_new_tokens)
-        pdb.set_trace()
+
         questions=[]
         for i in range(len(batch['image_path'])):
              options = ', '.join(batch['options'][i][:args.top_option])
@@ -128,9 +128,6 @@ def evaluate_zero_shot_image_classification_detect(
             if (dict[i]['confidence']>0.25 and dict[i]['clip_prediction'] == classnames[dict[i]['label']]) or (dict[i]['confidence']<=0.25 and any([has_word(answer, x) for x in gt_answers])):
                 high_clip_low_llm +=1
 
-            if dict[i]['yesorno'] == 'yes':
-                yes+=1
-
             num+=1
     acc_has_word = correct / num * 100
     acc_exact_match = exact_match / num * 100
@@ -142,7 +139,12 @@ def evaluate_zero_shot_image_classification_detect(
     print(f'{dataset_name} of clip unmatch llm match: {clip_unmatch_llm_match / clip_unmatch * 100:.2f}%')
     print(f'{dataset_name} of clip match confidence: {clip_match_conf / clip_match:.2f}%')
     print(f'{dataset_name} of clip unmatch confidence: {clip_unmatch_conf / clip_unmatch:.2f}%')
-
+    print('###########################')
+    print(f'{dataset_name} of yess: {yes:.2f}%')
+    print(f'{dataset_name} of yes_correct: {yes_correct/yes:.2f}%')
+    print(f'{dataset_name} of nos: {no:.2f}%')
+    print(f'{dataset_name} of no_correct: {no_correct/no:.2f}%')
+    
     metrics = {
         'has_word': acc_has_word,
         'exact match': acc_exact_match,
