@@ -46,13 +46,15 @@ def evaluate_zero_shot_image_classification_contra2(
             options_a = batch['options'][i][0]
             options_b = batch['options'][i][1]
 
-            questions_a.append(vicuna_prompt.format(f'Why is the object in the image a {options_a} and not a {options_b}? Answer it briefly.'))
-            questions_b.append(vicuna_prompt.format(f'Why is the object in the image a {options_b} and not a {options_a}? Answer it briefly.'))
+            questions_a.append(vicuna_prompt.format(f'Why is the object in the image a {options_a} and not a {options_b}? Answer in short.'))
+            questions_b.append(vicuna_prompt.format(f'Why is the object in the image a {options_b} and not a {options_a}? Answer in short.'))
 
         rationale_a = model.text_generate(questions_a, max_new_tokens=128)
         rationale_b = model.text_generate(questions_b, max_new_tokens=128)
         questions_all = []
         for i in range(len(batch['image_path'])):
+            options_a = batch['options'][i][0]
+            options_b = batch['options'][i][1]
             questions_all.append(rationale_a[i]+rationale_b[i]+f' What is the object in the image, {options_a} or a {options_b}?\nAnswer:')
 
         outputs = model.batch_generate(batch['image_path'], questions_all, max_new_tokens=max_new_tokens)
