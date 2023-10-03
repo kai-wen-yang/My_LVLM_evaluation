@@ -62,13 +62,13 @@ def evaluate_zero_shot_image_classification_contra(
             predictions.append(answer_dict)
             j += 1
 
-        if type(gt_answer) is not str:
-            gt_answer = gt_answer[0]
-        text_table = wandb.Table(columns=["answer", "label", "option", "confidence", "question"])
-        text_table.add_data(output, gt_answer, ', '.join(batch['options'][i][:args.top_option]), str(conf), question)
-        wandb.log({f'time{time}_batch{str(t)}/image.jpg': wandb.Image(get_image(image_path)),
-                   f'time{time}_batch{str(t)}/table': text_table,
-                   })
+        # if type(gt_answer) is not str:
+        #     gt_answer = gt_answer[0]
+        # text_table = wandb.Table(columns=["answer", "label", "option", "confidence", "question"])
+        # text_table.add_data(output, gt_answer, ', '.join(batch['options'][i][:args.top_option]), str(conf), question)
+        # wandb.log({f'time{time}_batch{str(t)}/image.jpg': wandb.Image(get_image(image_path)),
+        #            f'time{time}_batch{str(t)}/table': text_table,
+        #            })
         i += 1
 
     answer_dir = os.path.join(answer_path, time)
@@ -116,6 +116,13 @@ def evaluate_zero_shot_image_classification_contra(
                     clip_unmatch_llm_match+=1
             if (dict[i]['confidence']>0.25 and dict[i]['clip_prediction'] == classnames[dict[i]['label']]) or (dict[i]['confidence']<=0.25 and any([has_word(answer, x) for x in gt_answers])):
                 high_clip_low_llm +=1
+            else:
+                batch = dict[i]
+                text_table = wandb.Table(columns=["answer", "label", "option", "confidence", "question"])
+                text_table.add_data(batch['answer'], gt_answers, ', '.join(batch['options'][:args.top_option]), str(batch['confidence']), batch['question'])
+                wandb.log({f'time{time}_batch{str(t)}/image.jpg': wandb.Image(get_image(batch['image_path'])),
+                   f'time{time}_batch{str(i)}/table': text_table,
+                   })
 
             num+=1
     acc_has_word = correct / num * 100
