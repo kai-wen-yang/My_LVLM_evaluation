@@ -14,30 +14,29 @@ export PYTHONPATH="$PYTHONPATH:$PWD"
 
 cd ..
 
-python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name ImageNetOption --device 0 --max_new_tokens 64 \
---expname 7b_top5_option_base --top_option 5 --sample_num 1000 --task_name classification_instruct \
---cot 'Question: What is the object in the image?'
+python eval.py --model_name Cheetah --batch_size 8 --dataset_name ImageNetOption --device 0 --max_new_tokens 64 \
+--expname 1 --sample_num 1000 --task_name classification_cheetah
 
-python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name ImageNetOption --device 0 --max_new_tokens 64 \
---expname 7b_top5_option_rationale7 --top_option 5 --sample_num 1000 --task_name classification_instruct \
---cot 'Question: What is the environment or background of the object in the image? Does the image appear to be taken indoors or outdoors? What are the surrounding objects or elements in the image? Does the image appear to be taken during the day or at night? What is the object in the image?'
+# python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name ImageNetOption --device 0 --max_new_tokens 64 \
+# --expname 7b_top5_option_rationale7 --top_option 5 --sample_num 1000 --task_name classification_instruct \
+# --cot 'Question: What is the environment or background of the object in the image? Does the image appear to be taken indoors or outdoors? What are the surrounding objects or elements in the image? Does the image appear to be taken during the day or at night? What is the object in the image?'
 
 
-python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name Flowers102Option --device 0 --max_new_tokens 64 \
---expname 7b_top5_option_base --top_option 5 --sample_num 1000 --task_name classification_instruct \
---cot 'Question: What is the object in the image?'
+# python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name Flowers102Option --device 0 --max_new_tokens 64 \
+# --expname 7b_top5_option_base --top_option 5 --sample_num 1000 --task_name classification_instruct \
+# --cot 'Question: What is the object in the image?'
 
-python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name Flowers102Option --device 0 --max_new_tokens 64 \
---expname 7b_top5_option_rationale7 --top_option 5 --sample_num 1000 --task_name classification_instruct \
---cot 'Question: What is the environment or background of the object in the image? Does the image appear to be taken indoors or outdoors? What are the surrounding objects or elements in the image? Does the image appear to be taken during the day or at night? What is the object in the image?'
+# python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name Flowers102Option --device 0 --max_new_tokens 64 \
+# --expname 7b_top5_option_rationale7 --top_option 5 --sample_num 1000 --task_name classification_instruct \
+# --cot 'Question: What is the environment or background of the object in the image? Does the image appear to be taken indoors or outdoors? What are the surrounding objects or elements in the image? Does the image appear to be taken during the day or at night? What is the object in the image?'
 
-python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name IwildOODOption --device 0 --max_new_tokens 64 \
---expname 7b_top5_option_base --top_option 5 --sample_num 1000 --task_name classification_instruct \
---cot 'Question: What is the object in the image?'
+# python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name IwildOODOption --device 0 --max_new_tokens 64 \
+# --expname 7b_top5_option_base --top_option 5 --sample_num 1000 --task_name classification_instruct \
+# --cot 'Question: What is the object in the image?'
 
-python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name IwildOODOption --device 0 --max_new_tokens 64 \
---expname 7b_top5_option_rationale7 --top_option 5 --sample_num 1000 --task_name classification_instruct \
---cot 'Question: What is the environment or background of the object in the image? Does the image appear to be taken indoors or outdoors? What are the surrounding objects or elements in the image? Does the image appear to be taken during the day or at night? What is the object in the image?'
+# python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name IwildOODOption --device 0 --max_new_tokens 64 \
+# --expname 7b_top5_option_rationale7 --top_option 5 --sample_num 1000 --task_name classification_instruct \
+# --cot 'Question: What is the environment or background of the object in the image? Does the image appear to be taken indoors or outdoors? What are the surrounding objects or elements in the image? Does the image appear to be taken during the day or at night? What is the object in the image?'
 
 
 #python eval.py --model_name InstructBLIP --batch_size 8 --dataset_name ImageNetOption --device 0 --max_new_tokens 64 \
