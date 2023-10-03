@@ -5,4 +5,18 @@ from .kie import evaluate_KIE
 from .mrr import evaluate_MRR
 from .embodied import evaluate_embodied
 from .classification import evaluate_zero_shot_image_classification
-from .classification_onclip import evaluate_zero_shot_image_classification_clip
+from .classification_instruct import evaluate_zero_shot_image_classification_clip
+from .classification_twostep import evaluate_zero_shot_image_classification_twostep
+from .classification_contra import evaluate_zero_shot_image_classification_contra
+from .classification_contra2 import evaluate_zero_shot_image_classification_contra2
+from .classification_contra3 import evaluate_zero_shot_image_classification_contra3
+from .classification_detect import evaluate_zero_shot_image_classification_detect
+
+task_class_dict = {
+'classification_instruct': evaluate_zero_shot_image_classification_clip,
+'classification_twostep': evaluate_zero_shot_image_classification_twostep,
+'classification_contra': evaluate_zero_shot_image_classification_contra,
+'classification_contra2': evaluate_zero_shot_image_classification_contra2,
+'classification_contra3': evaluate_zero_shot_image_classification_contra3,
+'classification_detect': evaluate_zero_shot_image_classification_detect
+}

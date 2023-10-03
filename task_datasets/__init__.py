@@ -1,11 +1,13 @@
-DATA_DIR = '/nvme/share/xupeng/datasets'
+DATA_DIR = '/fs/nexus-scratch/kwyang3/data/'
 
 from .ocr_datasets import ocrDataset
 from .caption_datasets import NoCapsDataset, FlickrDataset, COCOCaptionDataset, COCOCaptionDatasetTest
 from .kie_datasets import SROIEDataset, FUNSDDataset, POIEDataset
 from .embod_datasets import EmbodiedDataset
-from .cls_datasets import ImageNetDataset, CIFAR10Dataset, CIFAR100Dataset, OxfordIIITPet, Flowers102
+from .cls_datasets import (ImageNetDataset, CIFAR10Dataset, CIFAR100Dataset, OxfordIIITPet,
+                           Flowers102, ImageNetOption, IwildIDOption, IwildOODOption, Flowers102Option)
 from .whoops import WHOOPSCaptionDataset, WHOOPSVQADataset, WHOOPSWeirdDataset
+from .iwildcam_dataset import IWildCamDataset
 from .vqa_datasets import (
     TextVQADataset, DocVQADataset, OCRVQADataset, STVQADataset,
     ScienceQADataset, OKVQADataset, GQADataset, VizWizDataset,
@@ -50,10 +52,14 @@ dataset_class_dict = {
     "MinecraftPolicy": partial(EmbodiedDataset, dataset_name="MinecraftPolicy"),
     # classification
     'ImageNet': ImageNetDataset,
+    'ImageNetOption': ImageNetOption,
+    'IwildIDOption': IwildIDOption,
+    'IwildOODOption': IwildOODOption,
     'CIFAR10': CIFAR10Dataset,
     'CIFAR100': CIFAR100Dataset,
     'OxfordIIITPet': OxfordIIITPet,
     'Flowers102': Flowers102,
+    'Flowers102Option': Flowers102Option,
     # whoops
     'WHOOPSCaption': WHOOPSCaptionDataset,
     'WHOOPSVQA': WHOOPSVQADataset,

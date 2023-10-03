@@ -24,3 +24,8 @@ class TestInstructBLIP:
         imgs = torch.stack(imgs, dim=0).to(self.device)
         output = self.model.generate({"image": imgs, "prompt": question_list}, max_length=max_new_tokens)
         return output
+
+    @torch.no_grad()
+    def text_generate(self, question_list, max_new_tokens=128):
+        output = self.model.generate_text({"prompt": question_list}, device=self.device, max_length=max_new_tokens)
+        return output

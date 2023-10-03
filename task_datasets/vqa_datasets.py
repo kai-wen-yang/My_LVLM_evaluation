@@ -7,7 +7,7 @@ import pdb
 
 
 class TextVQADataset(Dataset):
-    data_root = f"{DATA_DIR}/VQA_Datasets/TextVQA"
+    data_root = "/fs/nexus-scratch/kwyang3/data/TextVQA"
 
     def __init__(self):
         self.data = json.load(open(f"{self.data_root}/TextVQA_0.5.1_val.json", "r"))["data"]

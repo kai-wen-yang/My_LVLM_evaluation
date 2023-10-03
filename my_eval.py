@@ -13,7 +13,7 @@ from task_datasets import ocrDataset, dataset_class_dict
 from models import get_model, get_image
 torch.hub.set_dir('/fs/nexus-scratch/kwyang3/models')
 import pdb
-
+import collections
 from tqdm import tqdm
 from torch.utils.data import DataLoader
 from typing import Optional
@@ -25,6 +25,9 @@ imagenet_templates = [
 ]
 import pdb
 import wandb
+from datasets import Dataset, load_dataset
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Demo")
 
@@ -118,18 +121,18 @@ def zeroshot_classifier(clip_model, classnames, templates):
 def main(args):
     wandb.init()
     os.environ['CUDA_VISIBLE_DEVICES'] = str(args.device)
-    clip_model, train_preprocess, val_preprocess = clip.load("ViT-B/16", args.device, jit=False)
+    clip_model, train_preprocess, val_preprocess = clip.load("ViT-L/14", args.device, jit=False)
     clip_model.eval()
     clip_model.cuda()
 
     dataset = dataset_class_dict[args.dataset_name]()
-    dataset = sample_dataset(dataset, args.sample_num, args.sample_seed)
     dataloader = DataLoader(dataset, batch_size=args.batch_size, collate_fn=lambda batch: {key: [dict[key] for dict in batch] for key in batch[0]})
-    zeroshot_weights_base = zeroshot_classifier(clip_model, openai_classnames, imagenet_templates)
+    classnames = dataset.classnames
+    zeroshot_weights_base = zeroshot_classifier(clip_model, classnames, imagenet_templates)
     	 
     outputs=[]
     targets=[]
-    
+    dataset_dict = collections.defaultdict(list)
     for batch in tqdm(dataloader):
         image_path, target = batch['image_path'], batch['label']
 
@@ -147,17 +150,21 @@ def main(args):
         outputs.append(logits_base.cpu())
         targets.append(target.cpu())
 	    
-        _, y_pred = logits_base.topk(k=5, dim=1)
-        questions=[]
-        pdb.set_trace()
+        toplogits, y_pred = logits_base.topk(k=20, dim=1)
+
         for i in range(target.size(0)):
-             options = '\n- '.join([openai_classnames[ind] for ind in y_pred[i].tolist()])
-             questions.append(f"Question: What is the object in the image?\nChoose the best answer from the following choices:\n- {options}")
-		
-    acc=accuracy(torch.cat(outputs,dim=0), torch.cat(targets,dim=0), (1,5))
+            dataset_dict['image_path'].append(image_path[i])
+            dataset_dict['label'].append(batch['label'][i])
+            dataset_dict['clip_top10'].append([classnames[ind] for ind in y_pred[i].tolist()])
+            dataset_dict['confidence'].append(float(toplogits[i][0]))
+            dataset_dict['gt_answers'].append(classnames[batch['label'][i]])
+
+    dataset = Dataset.from_dict(dataset_dict)
+    dataset.save_to_disk("../data/imagenet_val_dict")
+
+    acc = accuracy(torch.cat(outputs,dim=0), torch.cat(targets,dim=0), (1,2,3,4,5,6,7,8,9,10))
     print(acc)
-	
-	    
+
 
 if __name__ == "__main__":
     args = parse_args()

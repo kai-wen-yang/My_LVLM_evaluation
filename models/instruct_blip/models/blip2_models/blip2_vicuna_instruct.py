@@ -13,6 +13,8 @@ import transformers
 
 from ...common.registry import registry
 from .blip2 import Blip2Base, disabled_train
+import pdb
+
 
 @registry.register_model("blip2_vicuna_instruct")
 class Blip2VicunaInstruct(Blip2Base):
@@ -82,8 +84,9 @@ class Blip2VicunaInstruct(Blip2Base):
         self.Qformer.cls = None
 
         self.llm_tokenizer = LlamaTokenizer.from_pretrained(llm_model, use_fast=False, truncation_side="left")
+
         self.llm_model = LlamaForCausalLM.from_pretrained(
-            llm_model, torch_dtype=torch.bfloat16
+            llm_model, torch_dtype=torch.bfloat16, load_in_8bit=True
         )
         self.llm_tokenizer.add_special_tokens({'pad_token': '[PAD]'})
         self.llm_tokenizer.add_special_tokens({'bos_token': '</s>'})
@@ -238,6 +241,69 @@ class Blip2VicunaInstruct(Blip2Base):
         loss = outputs.loss
 
         return {"loss": loss}
+
+
+    @torch.no_grad()
+    def generate_text(
+        self,
+        samples,
+        use_nucleus_sampling=False,
+        num_beams=5,
+        device='cpu',
+        max_length=256,
+        min_length=1,
+        top_p=0.9,
+        repetition_penalty=1.5,
+        length_penalty=1,
+        num_captions=1,
+        temperature=1,
+    ):
+        self.llm_tokenizer.padding_side = "right"
+
+        if "prompt" in samples.keys():
+            prompt = samples["prompt"]
+        else:
+            prompt = self.prompt
+        bs = len(prompt)
+        if isinstance(prompt, str):
+            prompt = [prompt] * bs
+        else:
+            assert len(prompt) == bs, "The number of prompts must be equal to the batch size."
+
+        # For TextCaps
+        if "ocr_tokens" in samples.keys() and "{}" in prompt[0]:
+            prompt = [p.format(', '.join(samples['ocr_tokens'][i][:30])) for i, p in enumerate(prompt)]
+
+        llm_tokens = self.llm_tokenizer(
+            prompt,
+            padding="longest",
+            return_tensors="pt"
+        ).to(device)
+
+        with self.maybe_autocast():
+            inputs_embeds = self.llm_model.get_input_embeddings()(llm_tokens.input_ids)
+            attention_mask = llm_tokens.attention_mask
+
+            outputs = self.llm_model.generate(
+                inputs_embeds=inputs_embeds,
+                attention_mask=attention_mask,
+                do_sample=use_nucleus_sampling,
+                top_p=top_p,
+                temperature=temperature,
+                num_beams=num_beams,
+                max_length=max_length,
+                min_length=min_length,
+                # eos_token_id=self.eos_token_id,
+                repetition_penalty=repetition_penalty,
+                length_penalty=length_penalty,
+                num_return_sequences=num_captions,
+            )
+
+        outputs[outputs == 0] = 2 # convert output id 0 to 2 (eos_token_id)
+        output_text = self.llm_tokenizer.batch_decode(outputs, skip_special_tokens=True)
+        output_text = [text.strip() for text in output_text]
+
+        return output_text
 
     @torch.no_grad()
     def generate(

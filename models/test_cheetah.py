@@ -68,10 +68,15 @@ class TestCheetah:
         for image in image_list:
             raw_img_list.append([image])
 
-        context = ["<ImageHere> "+ques for ques in question_list]
-        outputs = self.chat.batch_answer(raw_img_list, context, max_new_tokens=max_new_tokens)
-        # outputs = []
-        # for image, question in zip(image_list, question_list):
-        #     output = self.chat.answer([image], "<Img><HereForImage></Img> "+question, max_new_tokens=max_new_tokens)
-        #     outputs.append(output)
+        outputs = self.chat.batch_answer(raw_img_list, question_list, max_new_tokens=max_new_tokens)
+
+        return outputs
+
+
+    @torch.no_grad()
+    def text_generate(self, question_list, max_new_tokens=128):
+        raw_img_list = []
+
+        outputs = self.chat.batch_answer(raw_img_list, question_list, max_new_tokens=max_new_tokens)
+
         return outputs

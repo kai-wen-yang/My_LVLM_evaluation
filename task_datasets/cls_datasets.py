@@ -7,8 +7,13 @@ from typing import Any, Callable, Optional, Sequence, Tuple, Union
 from torchvision.datasets import CIFAR10, ImageNet
 from torchvision.datasets.vision import VisionDataset
 from torchvision.datasets.utils import check_integrity, download_and_extract_archive, download_url, verify_str_arg
-
+from datasets import Dataset, load_from_disk
 from . import DATA_DIR
+import pdb
+import sys
+sys.path.append("..")
+from imagenet_classnames import openai_classnames
+import pandas as pd
 
 
 class CIFAR10Dataset(CIFAR10):
@@ -102,11 +107,9 @@ class Flowers102(VisionDataset):
         self._split = verify_str_arg(split, "split", ("train", "val", "test"))
         self._base_folder = Path(self.root) / "flowers-102"
         self._images_folder = self._base_folder / "jpg"
-
-        self.cat_to_name = json.load(open(self._base_folder / 'cat_to_name.json', 'r'))
-
         if download:
             self.download()
+        self.cat_to_name = json.load(open(self._base_folder / 'cat_to_name.json', 'r'))
 
         if not self._check_integrity():
             raise RuntimeError("Dataset not found or corrupted. You can use download=True to download it")
@@ -121,9 +124,14 @@ class Flowers102(VisionDataset):
 
         self._labels = []
         self._image_files = []
+
         for image_id in image_ids:
             self._labels.append(image_id_to_label[image_id])
             self._image_files.append(self._images_folder / f"image_{image_id:05d}.jpg")
+
+        self.classnames = []
+        for i in range(102):
+            self.classnames.append(self.cat_to_name[str(i+1)])
 
     def __len__(self) -> int:
         return len(self._image_files)
@@ -134,6 +142,7 @@ class Flowers102(VisionDataset):
         answers = self.cat_to_name[str(label+1)]
         return {
             "image_path": image_path,
+            "label": label,
             "gt_answers": answers,
         }
 
@@ -163,9 +172,97 @@ class Flowers102(VisionDataset):
             download_url(self._download_url_prefix + filename, str(self._base_folder), md5=md5)
 
 
+class Flowers102Option:
+    def __init__(self, root: str="/fs/nexus-scratch/kwyang3/data/flowers_val_dict",
+    ):
+        self.ds = load_from_disk(root)
+        tmp = Flowers102()
+        self.classnames = tmp.classnames
+
+    def __getitem__(self, idx: int):
+        sample = self.ds[idx]
+        return {
+            "image_path": sample["image_path"],
+            "gt_answers": sample["gt_answers"],
+            "label": sample["label"],
+            "options": sample["clip_top10"],
+            "confidence": sample["confidence"],
+        }
+
+    def __len__(self):
+        return len(self.ds)
+
+
+class IwildOODOption:
+    def __init__(self, root: str="/fs/nexus-scratch/kwyang3/data/iwildcam_ood_test",
+    ):
+        self.ds = load_from_disk(root)
+        labels_csv = '/fs/nexus-scratch/kwyang3/FLYP/src/datasets/iwildcam_metadata/labels.csv'
+        df = pd.read_csv(labels_csv)
+        df = df[df['y'] < 99999]
+        self.classnames = [s.lower() for s in list(df['english'])]
+
+    def __getitem__(self, idx: int):
+        sample = self.ds[idx]
+        return {
+            "image_path": sample["image_path"],
+            "gt_answers": sample["gt_answers"],
+            "label": sample["label"],
+            "options": sample["clip_top10"],
+            "confidence": sample["confidence"],
+        }
+
+    def __len__(self):
+        return len(self.ds)
+
+
+class IwildIDOption:
+    def __init__(self, root: str="/fs/nexus-scratch/kwyang3/data/iwildcam_id_test",
+    ):
+        self.ds = load_from_disk(root)
+        labels_csv = '/fs/nexus-scratch/kwyang3/FLYP/src/datasets/iwildcam_metadata/labels.csv'
+        df = pd.read_csv(labels_csv)
+        df = df[df['y'] < 99999]
+        self.classnames = [s.lower() for s in list(df['english'])]
+
+    def __getitem__(self, idx: int):
+        sample = self.ds[idx]
+        return {
+            "image_path": sample["image_path"],
+            "gt_answers": sample["gt_answers"],
+            "label": sample["label"],
+            "options": sample["clip_top10"],
+            "confidence": sample["confidence"],
+        }
+
+    def __len__(self):
+        return len(self.ds)
+
+
+class ImageNetOption:
+    def __init__(self, root: str="/fs/nexus-scratch/kwyang3/data/imagenet_val_dict",
+    ):
+        self.ds = load_from_disk(root)
+        self.classnames = openai_classnames
+
+    def __getitem__(self, idx: int):
+        sample = self.ds[idx]
+        return {
+            "image_path": sample["image_path"],
+            "gt_answers": sample["gt_answers"],
+            "label": sample["label"],
+            "options": sample["clip_top10"],
+            "confidence": sample["confidence"],
+        }
+
+    def __len__(self):
+        return len(self.ds)
+
+
 class ImageNetDataset(ImageNet):
     def __init__(self, root: str="/fs/cml-datasets/ImageNet/ILSVRC2012", split: str = "val", **kwargs: Any):
         super().__init__(root, split, **kwargs)
+        self.classnames = openai_classnames
 
     def __getitem__(self, index: int) -> Tuple[str, Sequence[str]]:
         """
@@ -226,7 +323,7 @@ class OxfordIIITPet(VisionDataset):
         transforms: Optional[Callable] = None,
         transform: Optional[Callable] = None,
         target_transform: Optional[Callable] = None,
-        download: bool = False,
+        download: bool = True,
     ):
         self._split = verify_str_arg(split, "split", ("trainval", "test"))
         if isinstance(target_types, str):

@@ -9,8 +9,9 @@ import torch
 from .tools import has_word, remove_special_chars
 import sys 
 sys.path.append("..") 
-from my_eval import clip, zeroshot_classifier, openai_classnames, imagenet_templates
+from my_eval import openai_classnames
 from models import get_image
+import wandb
 
 
 def evaluate_zero_shot_image_classification_clip(
@@ -26,31 +27,17 @@ def evaluate_zero_shot_image_classification_clip(
     per_class_acc=True,
     cot=None,
     cot_position='end',
+    args=None,
 ):
-    ## load clip model
-    clip_model, train_preprocess, val_preprocess = clip.load("ViT-B/16", 'cuda', jit=False)
-    clip_model.eval()
-    clip_model.cuda()
-    zeroshot_weights_base = zeroshot_classifier(clip_model, openai_classnames, imagenet_templates)
-  
+    classnames = dataset.dataset.classnames
     predictions=[]
     dataloader = DataLoader(dataset, batch_size=batch_size, collate_fn=lambda batch: {key: [dict[key] for dict in batch] for key in batch[0]})
     i = 0
-    for batch in tqdm(dataloader, desc="Running inference"):
-        ## clip inference ##
-        images = [get_image(img) for img in batch['image_path']]
-        images = [val_preprocess(x) for x in images]
-        images = torch.stack(images, dim=0).cuda()
+    for t, batch in enumerate(tqdm(dataloader, desc="Running inference")):
 
-        with torch.no_grad():
-             image_features = clip_model.encode_image(images)
-             image_features /= image_features.norm(dim=-1, keepdim=True)
-
-        logits_base = image_features @ zeroshot_weights_base
-        _, y_pred = logits_base.topk(k=5, dim=1)
         questions=[]
-        for i in range(y_pred.size(0)):
-             options = ', '.join([openai_classnames[ind] for ind in y_pred[i].tolist()])
+        for i in range(len(batch['image_path'])):
+             options = ', '.join(batch['options'][i][:args.top_option])
              if not cot:
                  questions.append(f"Question: What is the object in the image?\n" \
                        f"Options: {options}\n")
@@ -63,18 +50,24 @@ def evaluate_zero_shot_image_classification_clip(
                        f"Options: {options}\n{cot}")
              #questions.append(f"What is the object in the image?\nChoose the best answer from the following choices:\n- {options}")#\nChoose the best answer from the following choices:\n- {options}")	
         ####
-
         outputs = model.batch_generate(batch['image_path'], questions, max_new_tokens=max_new_tokens)
 
         j = 0
-        for image_path, gt_answer, output, question in zip(batch['image_path'], batch['gt_answers'], outputs, questions):
+        for image_path, gt_answer, output, question, option, label, conf in zip(batch['image_path'], batch['gt_answers'],outputs, questions, batch['options'], batch['label'], batch['confidence']):
             if type(image_path) is not str:
                 image_path = f'batch#{i} sample#{j}'
             answer_dict={'question': question, 'answer': output,
-            'gt_answers': gt_answer, 'image_path': image_path,
-            'model_name': model_name}
+            'gt_answers': gt_answer, 'image_path': image_path, 'confidence':conf,
+            'model_name': model_name, 'clip_prediction': option[0], 'label':label}
+
             predictions.append(answer_dict)
             j += 1
+
+        text_table = wandb.Table(columns=["answer", "label", "option", "confidence", "question"])
+        text_table.add_data(output, gt_answer[0], ', '.join(batch['options'][i][:args.top_option]), str(conf), question)
+        wandb.log({f'time{time}_batch{str(t)}/image.jpg': wandb.Image(get_image(image_path)),
+                   f'time{time}_batch{str(t)}/table': text_table,
+                   })
         i += 1
 
     answer_dir = os.path.join(answer_path, time)
@@ -86,10 +79,17 @@ def evaluate_zero_shot_image_classification_clip(
     correct = 0
     num = 0
     exact_match = 0
+    clip_match = 0
+    clip_unmatch_llm_match = 0
+    clip_unmatch = 0
+    clip_match_conf = 0
+    clip_unmatch_conf = 0
+    high_clip_low_llm = 0
     per_class_dict = defaultdict(lambda : defaultdict(int))
     with open(answer_path, 'r') as f:
         dict = json.load(f)
         for i in range(len(dict)):
+
             answer = dict[i]['answer']
             answer = remove_special_chars(answer).lower()
             gt_answers = dict[i]['gt_answers']
@@ -105,11 +105,28 @@ def evaluate_zero_shot_image_classification_clip(
                 correct+=1
             if any([answer == x for x in gt_answers]):
                 exact_match += 1
+            if dict[i]['clip_prediction'] == classnames[dict[i]['label']]:
+                clip_match += 1
+                clip_match_conf += dict[i]['confidence']
+            else:
+                clip_unmatch += 1
+                clip_unmatch_conf += dict[i]['confidence']
+                if any([has_word(answer, x) for x in gt_answers]):
+                    clip_unmatch_llm_match+=1
+            if (dict[i]['confidence']>0.25 and dict[i]['clip_prediction'] == classnames[dict[i]['label']]) or (dict[i]['confidence']<=0.25 and any([has_word(answer, x) for x in gt_answers])):
+                high_clip_low_llm +=1
+
             num+=1
     acc_has_word = correct / num * 100
     acc_exact_match = exact_match / num * 100
     print(f'{dataset_name} of has_word: {acc_has_word:.2f}%')
     print(f'{dataset_name} of exact match: {acc_exact_match:.2f}%')
+    print(f'{dataset_name} of clip match: {clip_match / num * 100:.2f}%')
+    print(f'{dataset_name} of high clip low llm: {high_clip_low_llm / num * 100:.2f}%')
+    print(f'{dataset_name} of clip unmatch: {clip_unmatch / num * 100:.2f}%')
+    print(f'{dataset_name} of clip unmatch llm match: {clip_unmatch_llm_match / clip_unmatch * 100:.2f}%')
+    print(f'{dataset_name} of clip match confidence: {clip_match_conf / clip_match:.2f}%')
+    print(f'{dataset_name} of clip unmatch confidence: {clip_unmatch_conf / clip_unmatch:.2f}%')
 
     metrics = {
         'has_word': acc_has_word,
