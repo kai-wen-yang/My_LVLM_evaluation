@@ -12,7 +12,6 @@ sys.path.append("..")
 from models import get_image
 import wandb
 
-
 def evaluate_zero_shot_image_classification_detect(
     model,
     dataset,
@@ -32,23 +31,28 @@ def evaluate_zero_shot_image_classification_detect(
     predictions=[]
     dataloader = DataLoader(dataset, batch_size=batch_size, collate_fn=lambda batch: {key: [dict[key] for dict in batch] for key in batch[0]})
     i = 0
-    cot = args.cot
+    detect = '''Is the object in this picture is a {}?'''
     for t, batch in enumerate(tqdm(dataloader, desc="Running inference")):
 
+        detecter=[]
+        for i in range(len(batch['image_path'])):
+             detecter.append(detect.format(batch['options'][i][0]))
+        yesornos = model.batch_generate(batch['image_path'], detect, max_new_tokens=max_new_tokens)
+        pdb.set_trace()
         questions=[]
         for i in range(len(batch['image_path'])):
-             questions.append(cot.format(batch['options'][i][0]))
-
+             options = ', '.join(batch['options'][i][:args.top_option])
+             questions.append(f"{args.cot}\nOptions: {options}\nAnswer:")
         outputs = model.batch_generate(batch['image_path'], questions, max_new_tokens=max_new_tokens)
 
         j = 0
-        for image_path, gt_answer, output, question, option, label, conf in zip(batch['image_path'], batch['gt_answers'],outputs, questions, batch['options'], batch['label'], batch['confidence']):
+        for image_path, gt_answer, output, question, option, label, conf, yesorno in zip(batch['image_path'], batch['gt_answers'],outputs, questions, batch['options'], batch['label'], batch['confidence'], yesornos):
             if type(image_path) is not str:
                 image_path = f'batch#{i} sample#{j}'
             output = output.split(',')[0]
             answer_dict={'question': question, 'answer': output,
-            'gt_answers': gt_answer, 'image_path': image_path, 'confidence':conf,
-            'model_name': model_name, 'clip_prediction': option[0], 'label':label}
+            'gt_answers': gt_answer, 'image_path': image_path, 'confidence': conf,
+            'model_name': model_name, 'clip_prediction': option[0], 'label': label, 'yesorno': yesorno}
 
             predictions.append(answer_dict)
             j += 1
@@ -77,6 +81,9 @@ def evaluate_zero_shot_image_classification_detect(
     clip_match_conf = 0
     clip_unmatch_conf = 0
     high_clip_low_llm = 0
+
+    yes_correct, no_correct, yes, no = 0, 0, 0, 0
+
     per_class_dict = defaultdict(lambda : defaultdict(int))
     with open(answer_path, 'r') as f:
         dict = json.load(f)
@@ -107,6 +114,8 @@ def evaluate_zero_shot_image_classification_detect(
                     clip_unmatch_llm_match+=1
             if (dict[i]['confidence']>0.25 and dict[i]['clip_prediction'] == classnames[dict[i]['label']]) or (dict[i]['confidence']<=0.25 and any([has_word(answer, x) for x in gt_answers])):
                 high_clip_low_llm +=1
+
+            if dict[i]['yesorno'] == 'yes'
 
             num+=1
     acc_has_word = correct / num * 100
