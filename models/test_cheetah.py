@@ -74,9 +74,47 @@ class TestCheetah:
 
 
     @torch.no_grad()
-    def text_generate(self, question_list, max_new_tokens=128):
-        raw_img_list = []
+    def text_generate(self, question_list, max_new_tokens=128,
+         use_nucleus_sampling=False,
+         num_beams=5,
+         device='cpu',
+         max_length=256,
+         min_length=1,
+         top_p=0.9,
+         repetition_penalty=1.5,
+         length_penalty=1,
+         num_captions=1,
+         temperature=1,
+        ):
+        self.model.llm_tokenizer.padding_side = "right"
 
-        outputs = self.chat.batch_answer(raw_img_list, question_list, max_new_tokens=max_new_tokens)
+        llm_tokens = self.model.llm_tokenizer(
+            question_list,
+            padding="longest",
+            return_tensors="pt"
+        ).to(self.device)
 
-        return outputs
+        with self.maybe_autocast():
+            inputs_embeds = self.model.llm_model.get_input_embeddings()(llm_tokens.input_ids)
+            attention_mask = llm_tokens.attention_mask
+
+            outputs = self.model.llm_model.generate(
+                inputs_embeds=inputs_embeds,
+                attention_mask=attention_mask,
+                do_sample=use_nucleus_sampling,
+                top_p=top_p,
+                temperature=temperature,
+                num_beams=num_beams,
+                max_length=max_length,
+                min_length=min_length,
+                # eos_token_id=self.eos_token_id,
+                repetition_penalty=repetition_penalty,
+                length_penalty=length_penalty,
+                num_return_sequences=num_captions,
+            )
+
+        outputs[outputs == 0] = 2 # convert output id 0 to 2 (eos_token_id)
+        output_text = self.llm_tokenizer.batch_decode(outputs, skip_special_tokens=True)
+        output_text = [text.strip() for text in output_text]
+
+        return output_text
