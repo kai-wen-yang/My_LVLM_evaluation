@@ -42,12 +42,14 @@ def evaluate_zero_shot_image_classification_cheetah(
         for i in range(len(batch['image_path'])):
             options_a = batch['options'][i][0]
             options_b = batch['options'][i][1]
-            questions.append(vicuna_prompt.format(f'what is the key difference between indigo {options_a} and {options_b}? Answer in short.'))
+            questions.append(vicuna_prompt.format(f'What is the key difference between {options_a} and {options_b}? Answer in short.'))
 
         rationale = model.text_generate(questions, max_new_tokens=128)
         questions_all = []
         for i in range(len(batch['image_path'])):
-            questions_all.append(rationale[i]+f' <Img><HereForImage></Img>, what is the object in the image? {options_a} or {options_b}?\nAnswer:')
+            options_a = batch['options'][i][0]
+            options_b = batch['options'][i][1]
+            questions_all.append(rationale[i]+f' <Img><HereForImage></Img>, is the object in the image a {options_a} or a {options_b}?\nAnswer:')
 
         outputs = model.batch_generate(batch['image_path'], questions_all, max_new_tokens=max_new_tokens)
 
@@ -55,8 +57,9 @@ def evaluate_zero_shot_image_classification_cheetah(
         for image_path, gt_answer, output, question, option, label, conf in zip(batch['image_path'], batch['gt_answers'],outputs, questions_all, batch['options'], batch['label'], batch['confidence']):
             if type(image_path) is not str:
                 image_path = f'batch#{i} sample#{j}'
+            output = output.split(',')[0]
             answer_dict={'question': question, 'answer': output,
-            'gt_answers': gt_answer, 'image_path': image_path, 'confidence':conf,
+            'gt_answers': gt_answer, 'image_path': image_path, 'confidence':conf, 'options': option,
             'model_name': model_name, 'clip_prediction': option[0], 'label':label}
 
             predictions.append(answer_dict)
@@ -119,8 +122,8 @@ def evaluate_zero_shot_image_classification_cheetah(
             else:
                 batch = dict[i]
                 text_table = wandb.Table(columns=["answer", "label", "option", "confidence", "question"])
-                text_table.add_data(batch['answer'], gt_answers, ', '.join(batch['options'][:args.top_option]), str(batch['confidence']), batch['question'])
-                wandb.log({f'time{time}_batch{str(t)}/image.jpg': wandb.Image(get_image(batch['image_path'])),
+                text_table.add_data(batch['answer'], gt_answers[0], ', '.join(batch['options'][:args.top_option]), str(batch['confidence']), batch['question'])
+                wandb.log({f'time{time}_batch{str(i)}/image.jpg': wandb.Image(get_image(batch['image_path'])),
                    f'time{time}_batch{str(i)}/table': text_table,
                    })
 
